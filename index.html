@@ -3,249 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prism - Comprehensive Prototype</title>
+    <title>Prism - Accounting Prototype</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body {
-            font-family: 'Sarabun', 'Inter', sans-serif;
-            background-color: #f8fafc;
-        }
-        .sidebar-link.active, .sidebar-link:hover {
-            background-color: #0B3954;
-            color: white;
-        }
-        .main-content {
-            display: none;
-        }
-        .main-content.active {
-            display: block;
-            animation: fadeIn 0.5s;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .kpi-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-        }
-        .modal {
-            display: none;
-            transition: opacity 0.3s ease;
-        }
-        .modal.show {
-            display: flex;
-        }
-        .loader {
-            display: none;
-        }
-        .gemini-result-card {
-            display: none;
-        }
-        .chart-container {
+        body { font-family: 'Sarabun', 'Inter', sans-serif; background-color: #f8fafc; }
+        .sidebar { transition: transform 0.3s ease-in-out; }
+        .sidebar-link.active, .sidebar-link:hover { background-color: #0B3954; color: white; }
+        .main-content { display: none; }
+        .main-content.active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .kpi-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); }
+        .modal { display: none; transition: opacity 0.3s ease; }
+        .modal.show { display: flex; }
+        .loader { display: none; }
+        .gemini-result-card { display: none; }
+        .chart-container { position: relative; width: 100%; margin-left: auto; margin-right: auto; max-height: 400px; }
+        .upload-card:hover { border-color: #087E8B; background-color: #f0f9ff; }
+        .score-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #d90429 0% 15%, 
+                #f77f00 15% 40%, 
+                #fcbf49 40% 70%, 
+                #087E8B 70% 100%
+            );
             position: relative;
-            width: 100%;
-            margin-left: auto;
-            margin-right: auto;
-            max-height: 400px;
         }
-        .upload-card:hover {
-             border-color: #087E8B;
-             background-color: #f0f9ff;
+        .score-circle::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 170px;
+            height: 170px;
+            background-color: white;
+            border-radius: 50%;
         }
     </style>
 </head>
-<body class="flex h-screen overflow-hidden">
+<body class="bg-gray-100">
+    <div id="app-container" class="lg:flex h-screen">
+        <header class="lg:hidden bg-[#082032] text-white flex justify-between items-center p-4 shadow-lg sticky top-0 z-40">
+            <div class="flex items-center"><svg class="h-8 w-8 mr-2 text-cyan-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 12L12 21L3 12L12 3L21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 21V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><h1 class="text-xl font-bold tracking-wider">Prism</h1></div>
+            <button id="mobile-menu-button" class="p-2"><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg></button>
+        </header>
 
-    <aside class="w-64 bg-[#082032] text-gray-300 flex flex-col flex-shrink-0">
-        <div class="flex items-center justify-center h-20 border-b border-gray-700">
-            <svg class="h-8 w-8 mr-2 text-cyan-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 12L12 21L3 12L12 3L21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 21V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <h1 class="text-2xl font-bold tracking-wider text-white">Prism</h1>
-        </div>
-        <nav class="flex-1 px-4 py-6 space-y-2">
-            <a href="#" data-view="dashboard" class="sidebar-link flex items-center px-4 py-3 rounded-lg transition-colors duration-200">
-                <svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                Dashboard
-            </a>
-            <a href="#" data-view="cases" class="sidebar-link flex items-center px-4 py-3 rounded-lg transition-colors duration-200">
-                <svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
-                เคสทั้งหมด
-            </a>
-             <a href="#" data-view="reports" class="sidebar-link flex items-center px-4 py-3 rounded-lg transition-colors duration-200">
-                <svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                รายงาน
-            </a>
-            <a href="#" data-view="forecasts" class="sidebar-link flex items-center px-4 py-3 rounded-lg transition-colors duration-200">
-                <svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                พยากรณ์
-            </a>
-            <a href="#" data-view="connections" class="sidebar-link flex items-center px-4 py-3 rounded-lg transition-colors duration-200">
-                 <svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                การเชื่อมต่อ
-            </a>
-        </nav>
-        <div class="px-4 py-4 border-t border-gray-700">
-            <div class="flex items-center">
-                <img class="h-10 w-10 rounded-full object-cover" src="https://placehold.co/100x100/e2e8f0/475569?text=SP" alt="User avatar">
-                <div class="ml-3">
-                    <p class="text-sm font-medium text-white">ศุภากร พ.</p>
-                    <p class="text-xs text-gray-400">Founder & CEO</p>
-                </div>
-            </div>
-        </div>
-    </aside>
+        <aside id="sidebar" class="sidebar bg-[#082032] text-gray-300 w-64 fixed lg:relative inset-y-0 left-0 transform -translate-x-full lg:translate-x-0 z-50 lg:flex lg:flex-col flex-shrink-0">
+            <div class="flex items-center justify-center h-20 border-b border-gray-700 flex-shrink-0"><svg class="h-8 w-8 mr-2 text-cyan-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 12L12 21L3 12L12 3L21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 21V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><h1 class="text-2xl font-bold tracking-wider text-white">Prism</h1></div>
+            <nav class="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+                <p class="px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">เมนูหลัก</p>
+                <a href="#" data-view="dashboard" class="sidebar-link flex items-center px-4 py-3 rounded-lg transition-colors duration-200"><svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>Dashboard</a>
+                <a href="#" data-view="sales" class="sidebar-link flex items-center px-4 py-3 rounded-lg transition-colors duration-200"><svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/></svg>ขาย</a>
+                <a href="#" data-view="purchases" class="sidebar-link flex items-center px-4 py-3 rounded-lg transition-colors duration-200"><svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>ซื้อ</a>
+                <a href="#" data-view="accounting" class="sidebar-link flex items-center px-4 py-3 rounded-lg transition-colors duration-200"><svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>บัญชี</a>
+                
+                <p class="px-4 pt-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Intelligence</p>
+                 <a href="#" data-view="trustscore" class="sidebar-link flex items-center px-4 py-3 rounded-lg transition-colors duration-200"><svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>Trust Score</a>
+                <a href="#" data-view="cases" class="sidebar-link flex items-center px-4 py-3 rounded-lg transition-colors duration-200"><svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>เคสความเสี่ยง</a>
+                <a href="#" data-view="reports" class="sidebar-link flex items-center px-4 py-3 rounded-lg transition-colors duration-200"><svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>รายงานวิเคราะห์</a>
+                <a href="#" data-view="forecasts" class="sidebar-link flex items-center px-4 py-3 rounded-lg transition-colors duration-200"><svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>พยากรณ์</a>
 
-    <main class="flex-1 p-8 overflow-y-auto">
-
-        <div id="dashboard-view" class="main-content">
-            <!-- Dashboard Content -->
-            <h1 class="text-3xl font-bold text-gray-800">Executive Dashboard</h1>
-            <p class="text-gray-500 mt-1">ภาพรวมความเสี่ยงและสถานะการควบคุม ณ วันที่ 6 กันยายน 2568</p>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
-                <div class="kpi-card bg-white p-6 rounded-xl border border-gray-200 transition-all duration-300"><p class="text-sm font-medium text-gray-500">ภาพรวมความเสี่ยง</p><p class="text-3xl font-bold text-orange-500 mt-1">ปานกลาง</p></div>
-                <div class="kpi-card bg-white p-6 rounded-xl border border-gray-200 transition-all duration-300"><p class="text-sm font-medium text-gray-500">เคสวิกฤติ (Critical)</p><p class="text-3xl font-bold text-red-600 mt-1">3 เคส</p></div>
-                <div class="kpi-card bg-white p-6 rounded-xl border border-gray-200 transition-all duration-300"><p class="text-sm font-medium text-gray-500">ยอดเงินที่เสี่ยง</p><p class="text-3xl font-bold text-gray-800 mt-1">฿1.2M</p></div>
-                <div class="kpi-card bg-white p-6 rounded-xl border border-gray-200 transition-all duration-300"><p class="text-sm font-medium text-gray-500">การตรวจสอบ</p><p class="text-3xl font-bold text-green-600 mt-1">100%</p></div>
-            </div>
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
-                <div class="lg:col-span-2 bg-white p-6 rounded-xl border border-gray-200"><h2 class="text-lg font-bold text-gray-800">Risk Heatmap by Department</h2><div class="chart-container mt-4 h-80"><canvas id="riskHeatmap"></canvas></div></div>
-                <div class="bg-white p-6 rounded-xl border border-gray-200"><h2 class="text-lg font-bold text-gray-800">เคสวิกฤติที่ต้องตรวจสอบด่วน</h2><ul class="mt-4 space-y-4"><li class="flex items-start p-3 bg-red-50 rounded-lg hover:bg-red-100 cursor-pointer" data-case-id="CASE-001"><div><p class="font-semibold text-gray-800">อาจมีการจ่ายเงินซ้ำซ้อน</p><p class="text-sm text-gray-600">Vendor: A Plus Supplies</p><p class="text-sm text-red-600 font-medium">ยอดเงิน: ฿250,000</p></div></li><li class="flex items-start p-3 bg-red-50 rounded-lg hover:bg-red-100 cursor-pointer" data-case-id="CASE-002"><div><p class="font-semibold text-gray-800">บันทึกค่าใช้จ่ายนอกเวลาทำการ</p><p class="text-sm text-gray-600">แผนก: Sales (คุณสมชาย)</p><p class="text-sm text-red-600 font-medium">เวลา: 03:15 น.</p></div></li><li class="flex items-start p-3 bg-red-50 rounded-lg hover:bg-red-100 cursor-pointer" data-case-id="CASE-003"><div><p class="font-semibold text-gray-800">แก้ไขข้อมูลบัญชีธนาคาร Vendor</p><p class="text-sm text-gray-600">Vendor: Hightech Solutions</p><p class="text-sm text-red-600 font-medium">ผู้ดำเนินการ: Procurement</p></div></li></ul></div>
-            </div>
-        </div>
-
-        <div id="cases-view" class="main-content">
-            <!-- Cases Content -->
-            <h1 class="text-3xl font-bold text-gray-800">เคสทั้งหมด</h1>
-            <p class="text-gray-500 mt-1">รายการที่ต้องทำการตรวจสอบทั้งหมด</p>
-             <div class="mt-6 bg-white rounded-xl border border-gray-200 overflow-x-auto"><table class="w-full text-left"><thead class="bg-gray-50"><tr><th class="p-4 font-semibold text-sm text-gray-600 whitespace-nowrap">Case ID</th><th class="p-4 font-semibold text-sm text-gray-600 whitespace-nowrap">คำอธิบาย</th><th class="p-4 font-semibold text-sm text-gray-600 whitespace-nowrap">ความรุนแรง</th><th class="p-4 font-semibold text-sm text-gray-600 whitespace-nowrap">สถานะ</th></tr></thead><tbody class="divide-y divide-gray-200"><tr class="hover:bg-gray-50 cursor-pointer" data-case-id="CASE-001"><td class="p-4 text-sm text-gray-800 font-medium">CASE-001</td><td class="p-4 text-sm text-gray-600">อาจมีการจ่ายเงินซ้ำซ้อนให้ Vendor</td><td class="p-4 text-sm"><span class="px-2 py-1 text-xs font-semibold text-red-800 bg-red-200 rounded-full">วิกฤติ</span></td><td class="p-4 text-sm"><span class="px-2 py-1 text-xs font-semibold text-blue-800 bg-blue-200 rounded-full">เปิดใหม่</span></td></tr><tr class="hover:bg-gray-50 cursor-pointer" data-case-id="CASE-002"><td class="p-4 text-sm text-gray-800 font-medium">CASE-002</td><td class="p-4 text-sm text-gray-600">บันทึกค่าใช้จ่ายเดินทางนอกเวลาทำการ</td><td class="p-4 text-sm"><span class="px-2 py-1 text-xs font-semibold text-red-800 bg-red-200 rounded-full">วิกฤติ</span></td><td class="p-4 text-sm"><span class="px-2 py-1 text-xs font-semibold text-yellow-800 bg-yellow-200 rounded-full">กำลังตรวจสอบ</span></td></tr><tr class="hover:bg-gray-50 cursor-pointer" data-case-id="CASE-003"><td class="p-4 text-sm text-gray-800 font-medium">CASE-003</td><td class="p-4 text-sm text-gray-600">มีการแก้ไขข้อมูลบัญชีธนาคารของ Vendor</td><td class="p-4 text-sm"><span class="px-2 py-1 text-xs font-semibold text-red-800 bg-red-200 rounded-full">วิกฤติ</span></td><td class="p-4 text-sm"><span class="px-2 py-1 text-xs font-semibold text-blue-800 bg-blue-200 rounded-full">เปิดใหม่</span></td></tr><tr class="hover:bg-gray-50 cursor-pointer" data-case-id="CASE-004"><td class="p-4 text-sm text-gray-800 font-medium">CASE-004</td><td class="p-4 text-sm text-gray-600">ค่าใช้จ่ายสูงกว่าค่าเฉลี่ยของแผนก 300%</td><td class="p-4 text-sm"><span class="px-2 py-1 text-xs font-semibold text-orange-800 bg-orange-200 rounded-full">สูง</span></td><td class="p-4 text-sm"><span class="px-2 py-1 text-xs font-semibold text-green-800 bg-green-200 rounded-full">ปิดแล้ว</span></td></tr></tbody></table></div>
-        </div>
+                <p class="px-4 pt-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">ตั้งค่า</p>
+                <a href="#" data-view="connections" class="sidebar-link flex items-center px-4 py-3 rounded-lg transition-colors duration-200"><svg class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>การเชื่อมต่อ</a>
+            </nav>
+            <div class="px-4 py-4 border-t border-gray-700 mt-auto flex-shrink-0"><div class="flex items-center"><img class="h-10 w-10 rounded-full object-cover" src="https://placehold.co/100x100/e2e8f0/475569?text=SP" alt="User avatar"><div class="ml-3"><p class="text-sm font-medium text-white">ศุภากร พ.</p><p class="text-xs text-gray-400">Founder & CEO</p></div></div></div>
+        </aside>
         
-        <div id="case-detail-view" class="main-content">
-            <!-- Case Detail Content -->
-            <a href="#" class="back-link text-blue-600 hover:underline">&larr; กลับไป</a>
-            <h1 class="text-3xl font-bold text-gray-800 mt-4">Case ID: <span id="case-id"></span></h1>
-            <p class="text-gray-500 mt-1" id="case-description"></p>
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
-                <div class="lg:col-span-2 space-y-6"><div class="bg-white p-6 rounded-xl border border-gray-200"><h2 class="text-lg font-bold text-gray-800">ผลการวิเคราะห์จาก Prism AI</h2><div class="mt-4 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded-r-lg"><p class="font-semibold text-yellow-800">Prism ตรวจพบ:</p><p class="text-yellow-700" id="ai-finding"></p></div></div><div class="bg-white p-6 rounded-xl border border-gray-200 gemini-result-card" id="gemini-result-card"><h2 class="text-lg font-bold text-gray-800 flex items-center"><span class="text-xl mr-2">✨</span> สรุปและคำแนะนำโดย Prism AI</h2><div class="mt-4 space-y-4"><div><h3 class="font-semibold text-gray-700">สรุปความเสี่ยง</h3><p class="text-gray-600 mt-1 text-sm" id="gemini-summary"></p></div><div><h3 class="font-semibold text-gray-700">ขั้นตอนการตรวจสอบถัดไป</h3><ul class="list-disc list-inside text-gray-600 mt-1 text-sm space-y-1" id="gemini-steps"></ul></div><div><h3 class="font-semibold text-gray-700">ร่างอีเมลสำหรับสอบถาม</h3><div class="mt-1 p-3 bg-gray-50 rounded-md border text-xs text-gray-600 whitespace-pre-wrap" id="gemini-email"></div></div></div></div><div class="bg-white p-6 rounded-xl border border-gray-200"><h2 class="text-lg font-bold text-gray-800">หลักฐานที่เกี่ยวข้อง</h2><div id="evidence-section" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4"></div></div></div>
-                <div class="bg-white p-6 rounded-xl border border-gray-200 h-fit"><h2 class="text-lg font-bold text-gray-800">จัดการเคส</h2><div class="mt-4 space-y-3"><button class="w-full bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-bold py-2 px-4 rounded-lg hover:from-purple-600 hover:to-indigo-700 transition flex items-center justify-center" id="gemini-analysis-btn"><span class="text-xl mr-2">✨</span> วิเคราะห์เคสด้วย Prism AI</button><div class="loader items-center justify-center text-gray-600"><svg class="animate-spin h-5 w-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>กำลังวิเคราะห์...</div><button class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition">ปิดเคส</button></div></div>
-            </div>
-        </div>
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
 
-        <div id="reports-view" class="main-content">
-            <!-- Reports Content -->
-            <h1 class="text-3xl font-bold text-gray-800">ศูนย์รวมรายงาน</h1>
-            <p class="text-gray-500 mt-1">สร้างและเข้าถึงรายงานเชิงลึกทั้งหมดได้จากที่นี่</p>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-                <div class="bg-white p-6 rounded-xl border border-gray-200"><h2 class="text-lg font-bold text-gray-800">รายงานภาพรวมค่าใช้จ่าย</h2><p class="text-sm text-gray-500 mt-1">วิเคราะห์ค่าใช้จ่ายตามแผนกและช่วงเวลา</p><div class="chart-container mt-4 h-64"><canvas id="expenseByDeptChart"></canvas></div></div>
-                <div class="bg-white p-6 rounded-xl border border-gray-200"><h2 class="text-lg font-bold text-gray-800">รายงานการปฏิบัติตามนโยบาย</h2><p class="text-sm text-gray-500 mt-1">อัตราส่วนการเบิกจ่ายที่ตรงและไม่ตรงตามนโยบาย</p><div class="chart-container mt-4 h-64"><canvas id="complianceChart"></canvas></div></div>
-                <div class="bg-white p-6 rounded-xl border border-gray-200"><h2 class="text-lg font-bold text-gray-800">รายงานความเสี่ยง Vendor</h2><p class="text-sm text-gray-500 mt-1">จัดอันดับ Vendor ที่มีความเสี่ยงสูงสุด</p><div class="chart-container mt-4 h-64"><canvas id="vendorRiskChart"></canvas></div></div>
-            </div>
-        </div>
+                <div id="dashboard-view" class="main-content">
+                    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Dashboard ภาพรวมธุรกิจ</h1>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
+                        <div class="kpi-card bg-white p-6 rounded-xl border"><p class="text-sm font-medium text-gray-500">ยอดขาย (เดือนนี้)</p><p class="text-3xl font-bold text-green-600 mt-1">฿850K</p></div>
+                        <div class="kpi-card bg-white p-6 rounded-xl border"><p class="text-sm font-medium text-gray-500">ค่าใช้จ่าย (เดือนนี้)</p><p class="text-3xl font-bold text-red-600 mt-1">฿620K</p></div>
+                        <div class="kpi-card bg-white p-6 rounded-xl border"><p class="text-sm font-medium text-gray-500">กำไร/ขาดทุน</p><p class="text-3xl font-bold text-gray-800 mt-1">฿230K</p></div>
+                        <div class="kpi-card bg-white p-6 rounded-xl border"><p class="text-sm font-medium text-gray-500">เคสความเสี่ยงใหม่</p><p class="text-3xl font-bold text-orange-500 mt-1">3</p></div>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+                        <div class="bg-white p-6 rounded-xl border"><h2 class="text-lg font-bold text-gray-800">รายรับ vs รายจ่าย (ล้านบาท)</h2><div class="chart-container mt-4 h-80"><canvas id="incomeExpenseChart"></canvas></div></div>
+                        <div class="bg-white p-6 rounded-xl border"><h2 class="text-lg font-bold text-gray-800">กระแสเงินสด (ล้านบาท)</h2><div class="chart-container mt-4 h-80"><canvas id="cashflowChart"></canvas></div></div>
+                    </div>
+                </div>
 
-        <div id="forecasts-view" class="main-content">
-            <!-- Forecasts Content -->
-            <h1 class="text-3xl font-bold text-gray-800">การพยากรณ์และข้อมูลเชิงลึก</h1>
-            <p class="text-gray-500 mt-1">มองเห็นอนาคตทางการเงินและเตรียมพร้อมรับมือกับความเสี่ยงล่วงหน้า</p>
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
-                <div class="lg:col-span-2 bg-white p-6 rounded-xl border border-gray-200"><h2 class="text-lg font-bold text-gray-800">พยากรณ์กระแสเงินสด (90 วันข้างหน้า)</h2><div class="chart-container mt-4 h-96"><canvas id="cashflowForecastChart"></canvas></div></div>
-                <div class="space-y-6"><div class="kpi-card bg-white p-6 rounded-xl border border-gray-200"><p class="text-sm font-medium text-gray-500">ทำนายงบประมาณเกิน (Q4)</p><p class="text-2xl font-bold text-red-600 mt-1">ฝ่ายขาย (+18%)</p><p class="text-xs text-gray-500">Prism AI ทำนายว่าแผนกขายมีโอกาสใช้งบเกิน 18% จากพฤติกรรมในอดีต</p></div><div class="bg-white p-6 rounded-xl border border-gray-200"><h2 class="text-lg font-bold text-gray-800">ข้อมูลเชิงลึกจาก AI</h2><ul class="mt-2 text-sm text-gray-600 list-disc list-inside space-y-2"><li>ตรวจพบแนวโน้มการจ่ายเงินล่าช้าให้ Vendor กลุ่ม B ซึ่งอาจกระทบ Credit Rating</li><li>พยากรณ์ว่าค่าใช้จ่ายเดินทางจะสูงขึ้น 25% ในเดือนพฤศจิกายนจากปัจจัยตามฤดูกาล</li></ul></div></div>
-            </div>
-        </div>
+                <div id="sales-view" class="main-content">
+                    <div class="flex justify-between items-center"><h1 class="text-2xl md:text-3xl font-bold text-gray-800">ขาย</h1><button class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">+ สร้างใบแจ้งหนี้</button></div>
+                     <div class="mt-6 bg-white rounded-xl border border-gray-200 overflow-x-auto"><table class="w-full text-left"><thead class="bg-gray-50"><tr><th class="p-4">วันที่</th><th class="p-4">เลขที่</th><th class="p-4">ลูกค้า</th><th class="p-4 text-right">ยอดเงิน</th><th class="p-4 text-center">สถานะ</th></tr></thead><tbody class="divide-y divide-gray-200"><tr class="hover:bg-gray-50"><td>05/09/2568</td><td>INV-0128</td><td>บริษัท JKL จำกัด</td><td class="text-right">฿75,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-yellow-800 bg-yellow-200 rounded-full">รอชำระ</span></td></tr><tr class="hover:bg-gray-50"><td>02/09/2568</td><td>INV-0127</td><td>บริษัท GHI จำกัด</td><td class="text-right">฿210,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-green-800 bg-green-200 rounded-full">จ่ายแล้ว</span></td></tr><tr class="hover:bg-gray-50"><td>28/08/2568</td><td>INV-0126</td><td>บริษัท DEF จำกัด</td><td class="text-right">฿35,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-green-800 bg-green-200 rounded-full">จ่ายแล้ว</span></td></tr><tr class="hover:bg-gray-50"><td>25/08/2568</td><td>INV-0125</td><td>บริษัท ABC จำกัด</td><td class="text-right">฿50,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-green-800 bg-green-200 rounded-full">จ่ายแล้ว</span></td></tr><tr class="hover:bg-gray-50"><td>15/08/2568</td><td>INV-0124</td><td>บริษัท XYZ จำกัด</td><td class="text-right">฿120,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-red-800 bg-red-200 rounded-full">เกินกำหนด</span></td></tr></tbody></table></div>
+                </div>
 
-        <div id="connections-view" class="main-content">
-            <!-- Connections Content -->
-             <h1 class="text-3xl font-bold text-gray-800">การเชื่อมต่อระบบ</h1>
-             <p class="text-gray-500 mt-1">เชื่อมต่อ Prism เข้ากับระบบบัญชีและ ERP ที่คุณใช้อยู่ หรืออัปโหลดไฟล์โดยตรง</p>
-             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-6">
-                <div class="bg-white p-6 rounded-xl border border-gray-200 text-center"><img src="https://placehold.co/100x50/0073C2/FFFFFF?text=SAP" alt="SAP Logo" class="h-12 mx-auto mb-4"><h3 class="text-xl font-bold">SAP</h3><button data-id="sap" class="connect-btn mt-4 w-full bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-gray-300">เชื่อมต่อ</button><div class="loader mt-4 items-center justify-center text-gray-600"><svg class="animate-spin h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> กำลังเชื่อมต่อ...</div></div>
-                <div class="bg-white p-6 rounded-xl border border-gray-200 text-center"><img src="https://placehold.co/100x50/F80000/FFFFFF?text=Oracle" alt="Oracle Logo" class="h-12 mx-auto mb-4"><h3 class="text-xl font-bold">Oracle</h3><button data-id="oracle" class="connect-btn mt-4 w-full bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-gray-300">เชื่อมต่อ</button><div class="loader mt-4 items-center justify-center text-gray-600"><svg class="animate-spin h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> กำลังเชื่อมต่อ...</div></div>
-                <div class="bg-white p-6 rounded-xl border border-gray-200 text-center"><img src="https://placehold.co/100x50/003366/FFFFFF?text=Express" alt="Express Logo" class="h-12 mx-auto mb-4"><h3 class="text-xl font-bold">Express</h3><button data-id="express" class="connect-btn mt-4 w-full bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-gray-300">เชื่อมต่อ</button><div class="loader mt-4 items-center justify-center text-gray-600"><svg class="animate-spin h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> กำลังเชื่อมต่อ...</div></div>
-                <div class="upload-card bg-white p-6 rounded-xl border-2 border-dashed border-gray-300 text-center flex flex-col justify-center items-center cursor-pointer transition-colors duration-300"><svg class="h-12 w-12 text-gray-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-4-4V7a4 4 0 014-4h10a4 4 0 014 4v5a4 4 0 01-4 4H7z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 16v-4a4 4 0 00-4-4H8" /></svg><h3 class="text-xl font-bold">อัปโหลดไฟล์</h3><p class="text-sm text-gray-500">(CSV, Excel)</p><input type="file" class="hidden" id="file-upload-input"><div class="loader mt-4 items-center justify-center text-gray-600"><svg class="animate-spin h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> กำลังวิเคราะห์...</div></div>
-             </div>
-        </div>
+                <div id="purchases-view" class="main-content">
+                    <div class="flex justify-between items-center"><h1 class="text-2xl md:text-3xl font-bold text-gray-800">ซื้อ</h1><button class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">+ บันทึกค่าใช้จ่าย</button></div>
+                    <div class="mt-6 bg-white rounded-xl border border-gray-200 overflow-x-auto"><table class="w-full text-left"><thead class="bg-gray-50"><tr><th class="p-4">วันที่</th><th class="p-4">เลขที่บิล</th><th class="p-4">ผู้ขาย</th><th class="p-4 text-right">ยอดเงิน</th><th class="p-4 text-center">สถานะ</th></tr></thead><tbody class="divide-y divide-gray-200"><tr class="hover:bg-gray-50"><td>03/09/2568</td><td>EXP-09-001</td><td>Grab Transport</td><td class="text-right">฿850.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-green-800 bg-green-200 rounded-full">จ่ายแล้ว</span></td></tr><tr class="hover:bg-gray-50"><td>01/09/2568</td><td>B-5541</td><td>Hightech Solutions</td><td class="text-right">฿150,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-blue-800 bg-blue-200 rounded-full">จ่ายแล้ว</span></td></tr><tr class="hover:bg-gray-50"><td>29/08/2568</td><td>EXP-08-055</td><td>A Plus Supplies</td><td class="text-right">฿250,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-orange-800 bg-orange-200 rounded-full">รออนุมัติ</span></td></tr><tr class="hover:bg-gray-50"><td>25/08/2568</td><td>7781</td><td>OfficeMate</td><td class="text-right">฿12,500.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-green-800 bg-green-200 rounded-full">จ่ายแล้ว</span></td></tr><tr class="hover:bg-gray-50"><td>22/08/2568</td><td>AWS-082025</td><td>Amazon Web Services</td><td class="text-right">฿35,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-green-800 bg-green-200 rounded-full">จ่ายแล้ว</span></td></tr></tbody></table></div>
+                </div>
 
-        <div id="summary-view" class="main-content">
-            <h1 class="text-3xl font-bold text-gray-800">สรุปผลการวิเคราะห์ข้อมูล</h1>
-            <p class="text-gray-500 mt-1">Prism ได้ทำการวิเคราะห์ข้อมูลที่ท่านนำเข้าเรียบร้อยแล้ว</p>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
-                <div class="kpi-card bg-white p-6 rounded-xl border"><p class="text-sm font-medium text-gray-500">ธุรกรรมที่วิเคราะห์</p><p class="text-3xl font-bold text-blue-900 mt-1">15,420</p></div>
-                <div class="kpi-card bg-white p-6 rounded-xl border"><p class="text-sm font-medium text-gray-500">รายการความเสี่ยง</p><p class="text-3xl font-bold text-red-600 mt-1">48</p></div>
-                <div class="kpi-card bg-white p-6 rounded-xl border"><p class="text-sm font-medium text-gray-500">ยอดเงินที่เกี่ยวข้อง</p><p class="text-3xl font-bold text-gray-800 mt-1">฿2.8M</p></div>
-                <div class="kpi-card bg-white p-6 rounded-xl border"><p class="text-sm font-medium text-gray-500">เวลาที่ประหยัด</p><p class="text-3xl font-bold text-green-600 mt-1">~25 ชม.</p></div>
-            </div>
-            <div class="bg-white p-6 rounded-xl border mt-8">
-                <h2 class="text-lg font-bold text-gray-800">การแบ่งระดับความเสี่ยงที่ตรวจพบ</h2>
-                <div class="chart-container mt-4 h-80"><canvas id="summaryChart"></canvas></div>
-            </div>
-            <div class="mt-8 text-center"><button id="view-cases-btn" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-700 transition">ดูเคสความเสี่ยงทั้งหมด</button></div>
+                <div id="accounting-view" class="main-content"><h1 class="text-2xl md:text-3xl font-bold text-gray-800">บัญชี</h1><p class="text-gray-500 mt-1">ผังบัญชีและสมุดรายวัน (เร็วๆ นี้)</p></div>
+
+                <div id="trustscore-view" class="main-content">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center"><div><h1 class="text-2xl md:text-3xl font-bold text-gray-800">Prism Trust Score™</h1><p class="text-gray-500 mt-1">คะแนนความน่าเชื่อถือทางธุรกิจ สำหรับ: บริษัท ABC จำกัด</p></div><button class="mt-3 sm:mt-0 bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">ดาวน์โหลด Trust Report (PDF)</button></div>
+                    <div class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8 items-center"><div class="bg-white p-8 rounded-xl border flex flex-col items-center justify-center"><div class="score-circle flex items-center justify-center"><div class="text-center z-10"><p class="text-5xl font-extrabold text-[#087E8B]">850</p><p class="text-xs text-gray-500">จาก 1,000</p></div></div><p class="mt-4 text-2xl font-bold text-[#087E8B]">สุขภาพทางการเงินยอดเยี่ยม</p></div><div class="lg:col-span-2 bg-white p-6 rounded-xl border"><h2 class="text-lg font-bold text-gray-800">องค์ประกอบคะแนน</h2><div class="chart-container mt-4 h-80"><canvas id="trustScoreRadarChart"></canvas></div></div></div>
+                     <div class="mt-8 bg-white p-6 rounded-xl border"><h2 class="text-lg font-bold text-gray-800 flex items-center"><span class="text-xl mr-2">✨</span> Prism AI Insight</h2><p class="mt-2 text-gray-600">บริษัท ABC จำกัด มีสุขภาพทางการเงินที่แข็งแกร่งมาก โดยมีจุดเด่นด้าน **เสถียรภาพของกระแสเงินสด** และ **ความสามารถในการทำกำไร** ที่ดีเยี่ยม อย่างไรก็ตาม มีข้อสังเกตเล็กน้อยด้าน **การควบคุมภายใน** ซึ่งมีเคสความเสี่ยงเกิดขึ้นประปราย การปรับปรุงกระบวนการอนุมัติภายในจะช่วยยกระดับคะแนนให้สูงขึ้นไปอีกได้ครับ</p></div>
+                </div>
+
+                <div id="cases-view" class="main-content"><h1 class="text-2xl md:text-3xl font-bold text-gray-800">เคสความเสี่ยง</h1><div class="mt-6 bg-white rounded-xl border border-gray-200 overflow-x-auto"><table class="w-full text-left"><thead class="bg-gray-50"><tr><th class="p-4">Case ID</th><th class="p-4">คำอธิบาย</th><th class="p-4">ความรุนแรง</th><th class="p-4">สถานะ</th></tr></thead><tbody class="divide-y divide-gray-200"><tr class="hover:bg-gray-50 cursor-pointer" data-case-id="CASE-001"><td class="p-4">CASE-001</td><td>อาจมีการจ่ายเงินซ้ำซ้อนให้ Vendor</td><td class="p-4"><span class="px-2 py-1 text-xs text-red-800 bg-red-200 rounded-full">วิกฤติ</span></td><td class="p-4"><span class="px-2 py-1 text-xs text-blue-800 bg-blue-200 rounded-full">เปิดใหม่</span></td></tr><tr class="hover:bg-gray-50 cursor-pointer" data-case-id="CASE-002"><td class="p-4">CASE-002</td><td>บันทึกค่าใช้จ่ายเดินทางนอกเวลาทำการ</td><td class="p-4"><span class="px-2 py-1 text-xs text-red-800 bg-red-200 rounded-full">วิกฤติ</span></td><td class="p-4"><span class="px-2 py-1 text-xs text-yellow-800 bg-yellow-200 rounded-full">กำลังตรวจสอบ</span></td></tr><tr class="hover:bg-gray-50 cursor-pointer" data-case-id="CASE-003"><td class="p-4">CASE-003</td><td>มีการแก้ไขข้อมูลบัญชีธนาคารของ Vendor</td><td class="p-4"><span class="px-2 py-1 text-xs text-red-800 bg-red-200 rounded-full">วิกฤติ</span></td><td class="p-4"><span class="px-2 py-1 text-xs text-blue-800 bg-blue-200 rounded-full">เปิดใหม่</span></td></tr><tr class="hover:bg-gray-50 cursor-pointer" data-case-id="CASE-004"><td class="p-4">CASE-004</td><td>ค่าใช้จ่ายสูงกว่าค่าเฉลี่ยของแผนก 300%</td><td class="p-4"><span class="px-2 py-1 text-xs text-orange-800 bg-orange-200 rounded-full">สูง</span></td><td class="p-4"><span class="px-2 py-1 text-xs text-green-800 bg-green-200 rounded-full">ปิดแล้ว</span></td></tr><tr class="hover:bg-gray-50 cursor-pointer" data-case-id="CASE-005"><td class="p-4">CASE-005</td><td>เบิกค่าอาหารเย็นเกินนโยบายบริษัท</td><td class="p-4"><span class="px-2 py-1 text-xs text-yellow-800 bg-yellow-200 rounded-full">ปานกลาง</span></td><td class="p-4"><span class="px-2 py-1 text-xs text-blue-800 bg-blue-200 rounded-full">เปิดใหม่</span></td></tr></tbody></table></div></div>
+                
+                <div id="case-detail-view" class="main-content"><a href="#" class="back-link text-blue-600 hover:underline">&larr; กลับไป</a><h1 class="text-2xl md:text-3xl font-bold text-gray-800 mt-4">Case ID: <span id="case-id"></span></h1><p class="text-gray-500 mt-1" id="case-description"></p><div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6"><div class="lg:col-span-2 space-y-6"><div class="bg-white p-6 rounded-xl border"><h2 class="text-lg font-bold">ผลการวิเคราะห์จาก Prism AI</h2><div class="mt-4 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded-r-lg"><p class="font-semibold text-yellow-800">Prism ตรวจพบ:</p><p class="text-yellow-700" id="ai-finding"></p></div></div><div class="bg-white p-6 rounded-xl border gemini-result-card" id="gemini-result-card"><h2 class="text-lg font-bold flex items-center"><span class="text-xl mr-2">✨</span> สรุปและคำแนะนำโดย Prism AI</h2><div class="mt-4 space-y-4"><div><h3 class="font-semibold">สรุปความเสี่ยง</h3><p class="text-gray-600 mt-1 text-sm" id="gemini-summary"></p></div><div><h3 class="font-semibold">ขั้นตอนการตรวจสอบถัดไป</h3><ul class="list-disc list-inside text-gray-600 mt-1 text-sm space-y-1" id="gemini-steps"></ul></div><div><h3 class="font-semibold">ร่างอีเมลสำหรับสอบถาม</h3><div class="mt-1 p-3 bg-gray-50 rounded-md border text-xs whitespace-pre-wrap" id="gemini-email"></div></div></div></div><div class="bg-white p-6 rounded-xl border"><h2 class="text-lg font-bold">หลักฐานที่เกี่ยวข้อง</h2><div id="evidence-section" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4"></div></div></div><div class="bg-white p-6 rounded-xl border h-fit"><h2 class="text-lg font-bold">จัดการเคส</h2><div class="mt-4 space-y-3"><button class="w-full bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-bold py-2 px-4 rounded-lg hover:from-purple-600 hover:to-indigo-700 flex items-center justify-center" id="gemini-analysis-btn"><span class="text-xl mr-2">✨</span> วิเคราะห์เคสด้วย Prism AI</button><div class="loader items-center justify-center text-gray-600"><svg class="animate-spin h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>กำลังวิเคราะห์...</div><button class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">ปิดเคส</button></div></div></div></div>
+                <div id="reports-view" class="main-content"><h1 class="text-2xl md:text-3xl font-bold text-gray-800">รายงานวิเคราะห์</h1><p class="text-gray-500 mt-1">สร้างและเข้าถึงรายงานเชิงลึกทั้งหมดได้จากที่นี่</p><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6"><div class="bg-white p-6 rounded-xl border"><h2 class="text-lg font-bold">รายงานภาพรวมค่าใช้จ่าย</h2><p class="text-sm text-gray-500 mt-1">วิเคราะห์ค่าใช้จ่ายตามแผนก</p><div class="chart-container mt-4 h-64"><canvas id="expenseByDeptChart"></canvas></div></div><div class="bg-white p-6 rounded-xl border"><h2 class="text-lg font-bold">รายงานการปฏิบัติตามนโยบาย</h2><p class="text-sm text-gray-500 mt-1">อัตราส่วนการเบิกจ่าย</p><div class="chart-container mt-4 h-64"><canvas id="complianceChart"></canvas></div></div><div class="bg-white p-6 rounded-xl border"><h2 class="text-lg font-bold">รายงานความเสี่ยง Vendor</h2><p class="text-sm text-gray-500 mt-1">จัดอันดับ Vendor ที่มีความเสี่ยง</p><div class="chart-container mt-4 h-64"><canvas id="vendorRiskChart"></canvas></div></div></div></div>
+                <div id="forecasts-view" class="main-content"><h1 class="text-2xl md:text-3xl font-bold text-gray-800">พยากรณ์</h1><p class="text-gray-500 mt-1">มองเห็นอนาคตทางการเงินและเตรียมพร้อมรับมือ</p><div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6"><div class="lg:col-span-2 bg-white p-6 rounded-xl border"><h2 class="text-lg font-bold">พยากรณ์กระแสเงินสด (90 วันข้างหน้า)</h2><div class="chart-container mt-4 h-96"><canvas id="cashflowForecastChart"></canvas></div></div><div class="space-y-6"><div class="kpi-card bg-white p-6 rounded-xl border"><p class="text-sm font-medium text-gray-500">ทำนายงบประมาณเกิน (Q4)</p><p class="text-2xl font-bold text-red-600 mt-1">ฝ่ายขาย (+18%)</p><p class="text-xs text-gray-500">Prism AI ทำนายว่าแผนกขายมีโอกาสใช้งบเกิน 18%</p></div><div class="bg-white p-6 rounded-xl border"><h2 class="text-lg font-bold">ข้อมูลเชิงลึกจาก AI</h2><ul class="mt-2 text-sm text-gray-600 list-disc list-inside space-y-2"><li>ตรวจพบแนวโน้มการจ่ายเงินล่าช้าให้ Vendor กลุ่ม B</li><li>พยากรณ์ว่าค่าใช้จ่ายเดินทางจะสูงขึ้น 25% ในเดือน พ.ย.</li></ul></div></div></div></div>
+                <div id="connections-view" class="main-content"><h1 class="text-2xl md:text-3xl font-bold text-gray-800">การเชื่อมต่อระบบ</h1><p class="text-gray-500 mt-1">เชื่อมต่อ Prism กับระบบที่คุณใช้อยู่ หรืออัปโหลดไฟล์</p><div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-6"><div class="bg-white p-6 rounded-xl border text-center"><img src="https://placehold.co/100x50/0073C2/FFFFFF?text=SAP" alt="SAP Logo" class="h-12 mx-auto mb-4"><h3 class="text-xl font-bold">SAP</h3><button data-id="sap" class="connect-btn mt-4 w-full bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-gray-300">เชื่อมต่อ</button><div class="loader mt-4 items-center justify-center text-gray-600"><svg class="animate-spin h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> กำลังเชื่อมต่อ...</div></div><div class="bg-white p-6 rounded-xl border text-center"><img src="https://placehold.co/100x50/F80000/FFFFFF?text=Oracle" alt="Oracle Logo" class="h-12 mx-auto mb-4"><h3 class="text-xl font-bold">Oracle</h3><button data-id="oracle" class="connect-btn mt-4 w-full bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-gray-300">เชื่อมต่อ</button><div class="loader mt-4 items-center justify-center text-gray-600"><svg class="animate-spin h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> กำลังเชื่อมต่อ...</div></div><div class="bg-white p-6 rounded-xl border text-center"><img src="https://placehold.co/100x50/003366/FFFFFF?text=Express" alt="Express Logo" class="h-12 mx-auto mb-4"><h3 class="text-xl font-bold">Express</h3><button data-id="express" class="connect-btn mt-4 w-full bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-gray-300">เชื่อมต่อ</button><div class="loader mt-4 items-center justify-center text-gray-600"><svg class="animate-spin h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> กำลังเชื่อมต่อ...</div></div><div class="upload-card bg-white p-6 rounded-xl border-2 border-dashed border-gray-300 text-center flex flex-col justify-center items-center cursor-pointer transition-colors"><svg class="h-12 w-12 text-gray-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-4-4V7a4 4 0 014-4h10a4 4 0 014 4v5a4 4 0 01-4 4H7z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 16v-4a4 4 0 00-4-4H8" /></svg><h3 class="text-xl font-bold">อัปโหลดไฟล์</h3><p class="text-sm text-gray-500">(CSV, Excel)</p><input type="file" class="hidden" id="file-upload-input"><div class="loader mt-4 items-center justify-center text-gray-600"><svg class="animate-spin h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> กำลังวิเคราะห์...</div></div></div></div>
+                <div id="summary-view" class="main-content"><h1 class="text-2xl md:text-3xl font-bold text-gray-800">สรุปผลการวิเคราะห์ข้อมูล</h1><p class="text-gray-500 mt-1">Prism ได้ทำการวิเคราะห์ข้อมูลที่ท่านนำเข้าเรียบร้อยแล้ว</p><div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-6"><div class="kpi-card bg-white p-6 rounded-xl border"><p class="text-sm font-medium text-gray-500">ธุรกรรมที่วิเคราะห์</p><p class="text-3xl font-bold text-blue-900 mt-1">15,420</p></div><div class="kpi-card bg-white p-6 rounded-xl border"><p class="text-sm font-medium text-gray-500">รายการความเสี่ยง</p><p class="text-3xl font-bold text-red-600 mt-1">48</p></div><div class="kpi-card bg-white p-6 rounded-xl border"><p class="text-sm font-medium text-gray-500">ยอดเงินที่เกี่ยวข้อง</p><p class="text-3xl font-bold text-gray-800 mt-1">฿2.8M</p></div><div class="kpi-card bg-white p-6 rounded-xl border"><p class="text-sm font-medium text-gray-500">เวลาที่ประหยัด</p><p class="text-3xl font-bold text-green-600 mt-1">~25 ชม.</p></div></div><div class="bg-white p-6 rounded-xl border mt-8"><h2 class="text-lg font-bold text-gray-800">การแบ่งระดับความเสี่ยงที่ตรวจพบ</h2><div class="chart-container mt-4 h-80"><canvas id="summaryChart"></canvas></div></div><div class="mt-8 text-center"><button id="view-cases-btn" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-700 transition">ดูเคสความเสี่ยงทั้งหมด</button></div></div>
+
+            </main>
         </div>
-    </main>
-    
-    <div id="modal-container" class="modal fixed inset-0 bg-gray-900 bg-opacity-75 items-center justify-center z-50">
-        <!-- Modal Content is injected here -->
     </div>
     
+    <div id="modal-container" class="modal fixed inset-0 bg-gray-900 bg-opacity-75 items-center justify-center z-50"></div>
+    
     <script>
-        const mockCases = { "CASE-001": { description: "อาจมีการจ่ายเงินซ้ำซ้อนให้ Vendor: A Plus Supplies", aiFinding: "ตรวจพบ Invoice 2 ใบที่มีหมายเลขใกล้เคียงกัน, ยอดเงินตรงกัน, และวันที่ห่างกันไม่ถึง 14 วัน", evidence: `<div class="border p-4 rounded-lg bg-gray-50"><h4 class="font-semibold">Invoice #INV-AP-9981</h4><p class="text-sm text-gray-600">วันที่: 15/08/2568</p><p class="text-sm text-gray-600">ยอดเงิน: <span class="font-bold">฿250,000.00</span></p><p class="text-sm text-green-600">สถานะ: จ่ายแล้ว</p></div><div class="border p-4 rounded-lg bg-gray-50 border-red-500 ring-2 ring-red-200"><h4 class="font-semibold">Invoice #INV-AP-9981-A <span class="text-red-500">(น่าสงสัย)</span></h4><p class="text-sm text-gray-600">วันที่: 29/08/2568</p><p class="text-sm text-gray-600">ยอดเงิน: <span class="font-bold text-red-600">฿250,000.00</span></p><p class="text-sm text-orange-600">สถานะ: รออนุมัติ</p></div>`}, "CASE-002": { description: "บันทึกค่าใช้จ่ายเดินทางนอกเวลาทำการโดย คุณสมชาย", aiFinding: "ตรวจพบการบันทึก General Ledger สำหรับค่าเดินทาง (T&E) ในวันอาทิตย์ เวลา 03:15 น. ซึ่งผิดปกติจากพฤติกรรมของผู้ใช้และนโยบายบริษัท", evidence: `<div class="border p-4 rounded-lg bg-gray-50 col-span-2"><p>หลักฐานสำหรับเคสนี้...</p></div>`}, "CASE-003": { description: "มีการแก้ไขข้อมูลบัญชีธนาคารของ Vendor: Hightech Solutions", aiFinding: "ตรวจพบการเปลี่ยนแปลงข้อมูลบัญชีธนาคารของ Vendor ที่สำคัญ ก่อนหน้าที่จะมีการจ่ายเงินรอบถัดไปเพียง 2 วัน โดยผู้ดำเนินการไม่ใช่ทีม Finance", evidence: `<div class="border p-4 rounded-lg bg-gray-50 col-span-2"><p>หลักฐานสำหรับเคสนี้...</p></div>`}, "CASE-004": { description: "ค่าใช้จ่ายสูงกว่าค่าเฉลี่ยของแผนก 300%", aiFinding: "AI found something weird", evidence: `<div class="border p-4 rounded-lg bg-gray-50 col-span-2"><p>หลักฐานสำหรับเคสนี้...</p></div>`}};
+    document.addEventListener('DOMContentLoaded', function() {
+        const mockCases = { "CASE-001": { description: "อาจมีการจ่ายเงินซ้ำซ้อนให้ Vendor: A Plus Supplies", aiFinding: "ตรวจพบ Invoice 2 ใบที่มีหมายเลขใกล้เคียงกัน, ยอดเงินตรงกัน, และวันที่ห่างกันไม่ถึง 14 วัน", evidence: `<div class="border p-4 rounded-lg bg-gray-50"><h4 class="font-semibold">Invoice #INV-AP-9981</h4><p class="text-sm">วันที่: 15/08/2568</p><p class="text-sm">ยอดเงิน: <span class="font-bold">฿250,000.00</span></p><p class="text-sm text-green-600">สถานะ: จ่ายแล้ว</p></div><div class="border p-4 rounded-lg bg-gray-50 border-red-500 ring-2 ring-red-200"><h4 class="font-semibold">Invoice #INV-AP-9981-A <span class="text-red-500">(น่าสงสัย)</span></h4><p class="text-sm">วันที่: 29/08/2568</p><p class="text-sm ">ยอดเงิน: <span class="font-bold text-red-600">฿250,000.00</span></p><p class="text-sm text-orange-600">สถานะ: รออนุมัติ</p></div>`}, "CASE-002": { description: "บันทึกค่าใช้จ่ายเดินทางนอกเวลาทำการ", aiFinding: "ตรวจพบการบันทึก General Ledger สำหรับค่าเดินทาง (T&E) ในวันอาทิตย์ เวลา 03:15 น.", evidence: `<div class="border p-4 rounded-lg bg-gray-50 col-span-2"><p>หลักฐานสำหรับเคสนี้...</p></div>`}, "CASE-003": { description: "มีการแก้ไขข้อมูลบัญชีธนาคารของ Vendor", aiFinding: "ตรวจพบการเปลี่ยนแปลงข้อมูลบัญชีธนาคารของ Vendor ที่สำคัญ", evidence: `<div class="border p-4 rounded-lg bg-gray-50 col-span-2"><p>หลักฐานสำหรับเคสนี้...</p></div>`}, "CASE-004": { description: "ค่าใช้จ่ายสูงกว่าค่าเฉลี่ยของแผนก 300%", aiFinding: "AI found something weird", evidence: `<div class="border p-4 rounded-lg bg-gray-50 col-span-2"><p>หลักฐานสำหรับเคสนี้...</p></div>`}, "CASE-005": { description: "เบิกค่าอาหารเย็นเกินนโยบายบริษัท", aiFinding: "ตรวจพบการเบิกค่าอาหารเย็นจำนวน 1,200 บาท ซึ่งเกินกว่านโยบายบริษัทที่กำหนดไว้ 500 บาท", evidence: `<div class="border p-4 rounded-lg bg-gray-50 col-span-2"><p>หลักฐานสำหรับเคสนี้...</p></div>`}};
         let lastView = 'dashboard'; let currentCaseId = null; const mainContents = document.querySelectorAll('.main-content'); const sidebarLinks = document.querySelectorAll('.sidebar-link'); const charts = {};
+        const modalContainer = document.getElementById('modal-container');
         const defaultChartOptions = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { title: function(tooltipItems) { const item = tooltipItems[0]; let label = item.chart.data.labels[item.dataIndex]; if (Array.isArray(label)) return label.join(' '); return label; } } } } };
         
-        function switchView(viewId) { document.querySelectorAll('.main-content.active').forEach(v => lastView = v.id.replace('-view', '')); mainContents.forEach(content => content.classList.remove('active')); document.getElementById(viewId + '-view').classList.add('active'); sidebarLinks.forEach(link => { link.classList.remove('active'); if (link.dataset.view === viewId) link.classList.add('active'); }); if (viewId === 'reports') renderReportCharts(); if (viewId === 'forecasts') renderForecastCharts(); if (viewId === 'dashboard') renderDashboardCharts(); }
+        function switchView(viewId) { document.querySelectorAll('.main-content.active').forEach(v => lastView = v.id.replace('-view', '')); mainContents.forEach(content => content.classList.remove('active')); document.getElementById(viewId + '-view').classList.add('active'); sidebarLinks.forEach(link => { link.classList.remove('active'); if (link.dataset.view === viewId) link.classList.add('active'); }); if (viewId === 'dashboard') renderDashboardCharts(); if (viewId === 'reports') renderReportCharts(); if (viewId === 'forecasts') renderForecastCharts(); if (viewId === 'trustscore') renderTrustScoreCharts(); }
         function showCaseDetail(caseId) { currentCaseId = caseId; const caseData = mockCases[caseId]; if (!caseData) return; document.getElementById('case-id').innerText = caseId; document.getElementById('case-description').innerText = caseData.description; document.getElementById('ai-finding').innerText = caseData.aiFinding; document.getElementById('evidence-section').innerHTML = caseData.evidence; document.getElementById('gemini-result-card').style.display = 'none'; document.getElementById('gemini-analysis-btn').style.display = 'flex'; document.querySelector('#case-detail-view .loader').style.display = 'none'; switchView('case-detail'); }
-        async function getGeminiAnalysis(caseId) { const btn = document.getElementById('gemini-analysis-btn'); const loader = document.querySelector('#case-detail-view .loader'); const card = document.getElementById('gemini-result-card'); btn.style.display = 'none'; loader.style.display = 'flex'; card.style.display = 'none'; try { await new Promise(resolve => setTimeout(resolve, 2500)); const simResponseText = `{"summary": "ความเสี่ยงหลักคือการจ่ายเงินซ้ำซ้อนที่อาจเกิดขึ้นโดยเจตนาหรือจากข้อผิดพลาดในกระบวนการ Invoice สองใบมีความคล้ายคลึงกันอย่างมากทั้งยอดเงินและหมายเลข ซึ่งเป็นสัญญาณเตือนที่ชัดเจน ต้องระงับการจ่ายเงินใบที่สองไว้ก่อนเพื่อทำการตรวจสอบโดยด่วน","steps": ["1. ติดต่อแผนกบัญชี (AP) เพื่อระงับการจ่ายเงิน Invoice #INV-AP-9981-A ทันที (หากยังไม่จ่าย)","2. ตรวจสอบเอกสารประกอบการขอซื้อ (PO/GRN) ของ Invoice ทั้งสองใบเพื่อเปรียบเทียบความถูกต้องและที่มา","3. ติดต่อ Vendor 'A Plus Supplies' โดยตรงเพื่อยืนยันสถานะของ Invoice ทั้งสองใบและขอคำชี้แจง"],"emailDraft": "เรื่อง: ขอตรวจสอบข้อมูลใบแจ้งหนี้ (Invoice) #INV-AP-9981 และ #INV-AP-9981-A\\n\\nเรียน หัวหน้าแผนกจัดซื้อ,\\n\\nเนื่องจากระบบตรวจสอบ AI ของเราได้ตรวจพบรายการที่อาจเกิดความซ้ำซ้อน เกี่ยวกับใบแจ้งหนี้ 2 ฉบับจาก Vendor 'A Plus Supplies' ซึ่งมีรายละเอียดใกล้เคียงกันมาก\\n\\nจึงใคร่ขอความกรุณาทางแผนกช่วยตรวจสอบเอกสารที่มาของใบแจ้งหนี้ทั้งสองฉบับ และระงับการจ่ายเงินใบแจ้งหนี้ #INV-AP-9981-A ไว้ก่อน จนกว่าการตรวจสอบจะเสร็จสิ้นครับ\\n\\nขอแสดงความนับถือ,\\nฝ่ายตรวจสอบภายใน"}`; const simResponse = JSON.parse(simResponseText); document.getElementById('gemini-summary').innerText = simResponse.summary; document.getElementById('gemini-steps').innerHTML = simResponse.steps.map(step => `<li>${step}</li>`).join(''); document.getElementById('gemini-email').innerText = simResponse.emailDraft; card.style.display = 'block'; } catch (error) { document.getElementById('gemini-summary').innerText = "เกิดข้อผิดพลาดในการวิเคราะห์ โปรดลองอีกครั้ง"; card.style.display = 'block'; } finally { loader.style.display = 'none'; } }
+        async function getGeminiAnalysis(caseId) { const btn = document.getElementById('gemini-analysis-btn'); const loader = document.querySelector('#case-detail-view .loader'); const card = document.getElementById('gemini-result-card'); btn.style.display = 'none'; loader.style.display = 'flex'; card.style.display = 'none'; try { await new Promise(resolve => setTimeout(resolve, 2500)); const simResponseText = `{"summary": "ความเสี่ยงหลักคือการจ่ายเงินซ้ำซ้อน...","steps": ["1. ติดต่อแผนกบัญชี...","2. ตรวจสอบเอกสาร...","3. ติดต่อ Vendor..."],"emailDraft": "เรื่อง: ขอตรวจสอบข้อมูลใบแจ้งหนี้..."}`; const simResponse = JSON.parse(simResponseText); document.getElementById('gemini-summary').innerText = simResponse.summary; document.getElementById('gemini-steps').innerHTML = simResponse.steps.map(step => `<li>${step}</li>`).join(''); document.getElementById('gemini-email').innerText = simResponse.emailDraft; card.style.display = 'block'; } catch (error) { document.getElementById('gemini-summary').innerText = "เกิดข้อผิดพลาดในการวิเคราะห์"; card.style.display = 'block'; } finally { loader.style.display = 'none'; } }
         
         function showAnalysisSummary(element) { const parent = element.parentElement; const loader = parent.querySelector('.loader'); element.style.display = 'none'; loader.style.display = 'flex'; setTimeout(() => { switchView('summary'); renderSummaryChart(); }, 2500); }
-        sidebarLinks.forEach(link => { link.addEventListener('click', e => { e.preventDefault(); switchView(e.currentTarget.dataset.view); }); });
-
-        document.addEventListener('click', e => {
-            const caseTrigger = e.target.closest('[data-case-id]');
-            if (caseTrigger) showCaseDetail(caseTrigger.dataset.caseId);
-            
-            if (e.target.closest('.back-link')) { e.preventDefault(); switchView(lastView); }
-
-            if (e.target.id === 'gemini-analysis-btn') { if(currentCaseId) getGeminiAnalysis(currentCaseId); }
-            
-            const connectBtn = e.target.closest('.connect-btn');
-            if(connectBtn) showAnalysisSummary(connectBtn);
-            
-            if (e.target.id === 'view-cases-btn') switchView('cases');
-
-            const pluginDetailsBtn = e.target.closest('#show-plugin-details');
-            if(pluginDetailsBtn) showPluginModal();
-
-            const closeModalBtn = e.target.closest('#close-modal-btn');
-            if(closeModalBtn) closeModal();
-        });
-        
+        sidebarLinks.forEach(link => { link.addEventListener('click', e => { e.preventDefault(); switchView(e.currentTarget.dataset.view); document.getElementById('sidebar').classList.add('-translate-x-full'); }); });
+        document.addEventListener('click', e => { const caseTrigger = e.target.closest('[data-case-id]'); if (caseTrigger) {showCaseDetail(caseTrigger.dataset.caseId); return; } if (e.target.closest('.back-link')) { e.preventDefault(); switchView(lastView); return; } if (e.target.closest('#show-plugin-details')) { const caseId = 'CASE-001'; const caseData = mockCases[caseId]; const modalHTML = `<div class="bg-white rounded-xl shadow-2xl w-full max-w-lg m-4 transform transition-all duration-300 scale-95 opacity-0" id="modal-content"><div class="p-6"><div class="flex justify-between items-start"><div><h2 class="text-2xl font-bold text-gray-800">Case ID: ${caseId}</h2><p class="text-gray-500 mt-1">${caseData.description}</p></div><button id="close-modal-btn" class="text-gray-400 hover:text-gray-600 text-3xl">&times;</button></div><div class="mt-6"><h3 class="text-lg font-bold text-gray-800">ผลการวิเคราะห์จาก Prism AI</h3><div class="mt-2 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded-r-lg"><p class="text-yellow-700">${caseData.aiFinding}</p></div></div><div class="mt-6"><h3 class="text-lg font-bold text-gray-800">หลักฐานที่เกี่ยวข้อง</h3><div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">${caseData.evidence}</div></div></div></div>`; modalContainer.innerHTML = modalHTML; modalContainer.classList.add('show'); setTimeout(() => { document.getElementById('modal-content').classList.remove('scale-95', 'opacity-0'); }, 10); document.getElementById('close-modal-btn').addEventListener('click', closeModal); } });
+        document.getElementById('gemini-analysis-btn').addEventListener('click', () => { if(currentCaseId) getGeminiAnalysis(currentCaseId); });
+        document.querySelectorAll('.connect-btn').forEach(button => button.addEventListener('click', e => showAnalysisSummary(e.currentTarget)));
         document.querySelector('.upload-card').addEventListener('click', () => document.getElementById('file-upload-input').click());
         document.getElementById('file-upload-input').addEventListener('change', e => showAnalysisSummary(e.currentTarget.parentElement));
+        document.getElementById('view-cases-btn').addEventListener('click', () => switchView('cases'));
         
-        const modalContainer = document.getElementById('modal-container');
-        function showPluginModal() { 
-            const caseId = 'CASE-001'; const caseData = mockCases[caseId]; 
-            const modalHTML = `<div class="bg-white rounded-xl shadow-2xl w-full max-w-3xl m-4 transform transition-all duration-300 scale-95 opacity-0" id="modal-content"><div class="p-6"><div class="flex justify-between items-start"><div><h2 class="text-2xl font-bold text-gray-800">Case ID: ${caseId}</h2><p class="text-gray-500 mt-1">${caseData.description}</p></div><button id="close-modal-btn" class="text-gray-400 hover:text-gray-600 text-3xl">&times;</button></div><div class="mt-6"><h3 class="text-lg font-bold text-gray-800">ผลการวิเคราะห์จาก Prism AI</h3><div class="mt-2 p-4 bg-yellow-50 border-l-4 border-yellow-400 rounded-r-lg"><p class="text-yellow-700">${caseData.aiFinding}</p></div></div><div class="mt-6"><h3 class="text-lg font-bold text-gray-800">หลักฐานที่เกี่ยวข้อง</h3><div class="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">${caseData.evidence}</div></div></div></div>`; 
-            modalContainer.innerHTML = modalHTML; 
-            modalContainer.classList.add('show'); 
-            setTimeout(() => { 
-                const modalContent = document.getElementById('modal-content');
-                if(modalContent) modalContent.classList.remove('scale-95', 'opacity-0'); 
-            }, 10); 
-        }
-        function closeModal() { 
-            const modalContent = document.getElementById('modal-content');
-            if(modalContent) modalContent.classList.add('scale-95', 'opacity-0'); 
-            setTimeout(() => { modalContainer.classList.remove('show'); }, 300); 
-        }
+        function closeModal() { const modalContent = document.getElementById('modal-content'); if(modalContent) { modalContent.classList.add('scale-95', 'opacity-0'); setTimeout(() => { modalContainer.classList.remove('show'); modalContainer.innerHTML = ''; }, 300); } }
         modalContainer.addEventListener('click', e => { if (e.target === modalContainer) closeModal(); });
         
-        function renderDashboardCharts() { if (charts.riskHeatmap) charts.riskHeatmap.destroy(); charts.riskHeatmap = new Chart(document.getElementById('riskHeatmap').getContext('2d'), { type: 'bar', data: { labels: ['จัดซื้อ', 'การตลาด', 'ฝ่ายขาย', 'IT', 'HR', 'การเงิน'], datasets: [{ label: 'จำนวนเคสความเสี่ยงสูง', data: [12, 5, 19, 3, 2, 8], backgroundColor: ['#FF5A5F', '#BFD7EA', '#FF5A5F', '#BFD7EA', '#BFD7EA', '#FF5A5F'] }] }, options: { ...defaultChartOptions, indexAxis: 'y' } }); }
+        function renderDashboardCharts() { if (charts.incomeExpense) charts.incomeExpense.destroy(); charts.incomeExpense = new Chart(document.getElementById('incomeExpenseChart').getContext('2d'), { type: 'bar', data: { labels: ['มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.'], datasets: [{ label: 'รายรับ', data: [1.2, 1.5, 1.3, 1.6, 1.4, 1.7], backgroundColor: '#087E8B' }, { label: 'รายจ่าย', data: [0.9, 1.1, 1.0, 1.2, 1.1, 1.3], backgroundColor: '#FF5A5F' }] }, options: { ...defaultChartOptions, plugins: { ...defaultChartOptions.plugins, legend: { display: true, position: 'bottom' } }, scales: { x: { stacked: false }, y: { stacked: false } } } }); if (charts.cashflow) charts.cashflow.destroy(); charts.cashflow = new Chart(document.getElementById('cashflowChart').getContext('2d'), { type: 'line', data: { labels: ['มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.'], datasets: [{ label: 'กระแสเงินสด', data: [0.5, 0.9, 1.2, 1.6, 1.9, 2.3], borderColor: '#0B3954', tension: 0.1, fill: true, backgroundColor: 'rgba(11, 57, 84, 0.1)' }] }, options: defaultChartOptions }); }
         function renderReportCharts() { if (charts.expenseByDept) charts.expenseByDept.destroy(); charts.expenseByDept = new Chart(document.getElementById('expenseByDeptChart').getContext('2d'), { type: 'bar', data: { labels: ['จัดซื้อ', 'การตลาด', 'ฝ่ายขาย', 'IT'], datasets: [{ label: 'ค่าใช้จ่าย (ล้านบาท)', data: [5.2, 8.1, 12.5, 2.3], backgroundColor: '#0B3954' }] }, options: defaultChartOptions }); if (charts.complianceChart) charts.complianceChart.destroy(); charts.complianceChart = new Chart(document.getElementById('complianceChart').getContext('2d'), { type: 'doughnut', data: { labels: ['ตรงตามนโยบาย', 'ไม่ตรงตามนโยบาย'], datasets: [{ data: [92, 8], backgroundColor: ['#087E8B', '#FF5A5F'], borderWidth: 0 }] }, options: { ...defaultChartOptions, plugins: { ...defaultChartOptions.plugins, legend: { display: true, position: 'bottom' } } } }); if (charts.vendorRisk) charts.vendorRisk.destroy(); charts.vendorRisk = new Chart(document.getElementById('vendorRiskChart').getContext('2d'), { type: 'radar', data: { labels: ['จ่ายเงินซ้ำซ้อน', 'ราคาแพงกว่าตลาด', ['เอกสารไม่ครบถ้วน', 'หรือไม่ถูกต้อง'], 'ความสัมพันธ์ภายใน', 'ประวัติไม่ดี'], datasets: [{ label: 'Vendor A', data: [9, 4, 7, 8, 5], fill: true, backgroundColor: 'rgba(255, 90, 95, 0.2)', borderColor: '#FF5A5F', pointBackgroundColor: '#FF5A5F' }] }, options: { ...defaultChartOptions, plugins: { ...defaultChartOptions.plugins, legend: { display: true, position: 'bottom' } } } }); }
         function renderForecastCharts() { if (charts.cashflowForecast) charts.cashflowForecast.destroy(); charts.cashflowForecast = new Chart(document.getElementById('cashflowForecastChart').getContext('2d'), { type: 'line', data: { labels: ['มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'], datasets: [{ label: 'เงินสดรับ', data: [20, 22, 25, 23, null, null, null], borderColor: '#087E8B', backgroundColor: 'rgba(8, 126, 139, 0.1)', tension: 0.1, fill: true }, { label: 'เงินสดจ่าย', data: [18, 19, 21, 22, null, null, null], borderColor: '#FF5A5F', backgroundColor: 'rgba(255, 90, 95, 0.1)', tension: 0.1, fill: true }, { label: 'พยากรณ์เงินสดรับ', data: [null, null, null, 23, 26, 28, 30], borderColor: '#087E8B', borderDash: [5, 5], backgroundColor: 'rgba(8, 126, 139, 0.05)', tension: 0.1, fill: true}, { label: 'พยากรณ์เงินสดจ่าย', data: [null, null, null, 22, 24, 25, 26], borderColor: '#FF5A5F', borderDash: [5, 5], backgroundColor: 'rgba(255, 90, 95, 0.05)', tension: 0.1, fill: true}] }, options: { ...defaultChartOptions, plugins: { ...defaultChartOptions.plugins, legend: { display: true, position: 'bottom' } } } }); }
         function renderSummaryChart() { if (charts.summaryChart) charts.summaryChart.destroy(); charts.summaryChart = new Chart(document.getElementById('summaryChart').getContext('2d'), { type: 'doughnut', data: { labels: ['วิกฤติ (Critical)', 'สูง (High)', 'ปานกลาง (Medium)'], datasets: [{ data: [8, 15, 25], backgroundColor: ['#d90429', '#f77f00', '#fcbf49'], borderWidth: 0 }] }, options: { ...defaultChartOptions, plugins: { ...defaultChartOptions.plugins, legend: { display: true, position: 'bottom' } } } }); }
+        function renderTrustScoreCharts() { if (charts.trustScoreRadar) charts.trustScoreRadar.destroy(); charts.trustScoreRadar = new Chart(document.getElementById('trustScoreRadarChart').getContext('2d'), { type: 'radar', data: { labels: ['สุขภาพทางการเงิน', 'การควบคุมภายใน', 'ประสิทธิภาพ', 'ความโปร่งใส', 'เสถียรภาพ'], datasets: [{ label: 'บริษัท ABC จำกัด', data: [9, 7, 8, 9, 10], fill: true, backgroundColor: 'rgba(8, 126, 139, 0.2)', borderColor: '#087E8B', pointBackgroundColor: '#087E8B' }] }, options: { ...defaultChartOptions, plugins: { ...defaultChartOptions.plugins, legend: { display: true, position: 'bottom' } }, scales: { r: { beginAtZero: true, max: 10 } } } }); }
         
+        const sidebar = document.getElementById('sidebar');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        mobileMenuButton.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+        });
+
         switchView('dashboard');
+    });
     </script>
 </body>
 </html>
