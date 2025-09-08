@@ -161,7 +161,7 @@
             <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
                 <!-- Dashboard View -->
                 <div id="dashboard-view" class="main-content">
-                    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Business Health Command Center</h1>
+                    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">CFO's Strategic Command Center</h1>
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-6">
                         <div class="bg-white p-8 rounded-xl border flex flex-col items-center justify-center text-center">
                             <h2 class="text-lg font-bold text-gray-600">Prism Trust Score™</h2>
@@ -172,15 +172,15 @@
                         <div class="lg:col-span-2 bg-white p-6 rounded-xl border">
                             <h2 class="text-lg font-bold text-gray-800 flex items-center"><span class="text-2xl mr-2">✨</span> Prism AI Insight</h2>
                             <div class="mt-4 space-y-4">
-                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 cursor-pointer hover:bg-red-100" data-title="แจ้งเตือนความเสี่ยง (Risk Alert)" data-description="Prism AI ตรวจพบธุรกรรมที่มีความเสี่ยงสูง 3 รายการ ซึ่งอาจเป็นการจ่ายเงินซ้ำซ้อนหรือธุรกรรมที่ผิดปกติจากรูปแบบการใช้จ่ายปกติ">
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 cursor-pointer hover:bg-red-100" data-view="cases" data-title="แจ้งเตือนความเสี่ยง (Risk Alert)" data-description="Prism AI ตรวจพบธุรกรรมที่มีความเสี่ยงสูง 3 รายการ ซึ่งอาจเป็นการจ่ายเงินซ้ำซ้อนหรือธุรกรรมที่ผิดปกติจากรูปแบบการใช้จ่ายปกติ" data-action-label="ดูเคสความเสี่ยง">
                                     <p class="font-bold text-red-800">แจ้งเตือนความเสี่ยง 🔍</p>
                                     <p class="text-gray-700">พบ 3 ธุรกรรมน่าสงสัย อาจเป็นการจ่ายเงินซ้ำซ้อน</p>
                                 </div>
-                                <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-500 cursor-pointer hover:bg-yellow-100" data-title="พยากรณ์กระแสเงินสด (Cash Flow Forecast)" data-description="Prism AI วิเคราะห์แนวโน้มการเงินของคุณและคาดการณ์ว่ากระแสเงินสดจะลดลง 15% ใน 30 วันข้างหน้า ซึ่งเป็นสัญญาณเตือนให้วางแผนทางการเงินล่วงหน้า">
+                                <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-500 cursor-pointer hover:bg-yellow-100" data-view="forecasts" data-title="พยากรณ์กระแสเงินสด (Cash Flow Forecast)" data-description="Prism AI วิเคราะห์แนวโน้มการเงินของคุณและคาดการณ์ว่ากระแสเงินสดจะลดลง 15% ใน 30 วันข้างหน้า ซึ่งเป็นสัญญาณเตือนให้วางแผนทางการเงินล่วงหน้า" data-action-label="ดูรายงานพยากรณ์">
                                     <p class="font-bold text-yellow-800">พยากรณ์กระแสเงินสด 📈</p>
                                     <p class="text-gray-700">คาดการณ์ว่าเงินสดของคุณจะลดลง 15% ใน 30 วันข้างหน้า</p>
                                 </div>
-                                <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500 cursor-pointer hover:bg-green-100" data-title="โอกาสประหยัด (Savings Opportunity)" data-description="Prism AI ได้ค้นพบว่ามีค่าใช้จ่ายด้านซอฟต์แวร์ที่ซ้ำซ้อนกัน ซึ่งหากยกเลิกรายการที่ไม่จำเป็น อาจช่วยประหยัดเงินได้ถึง 5,000 บาท/เดือน">
+                                <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500 cursor-pointer hover:bg-green-100" data-view="reports" data-title="โอกาสประหยัด (Savings Opportunity)" data-description="Prism AI ได้ค้นพบว่ามีค่าใช้จ่ายด้านซอฟต์แวร์ที่ซ้ำซ้อนกัน ซึ่งหากยกเลิกรายการที่ไม่จำเป็น อาจช่วยประหยัดเงินได้ถึง 5,000 บาท/เดือน" data-action-label="ดูรายงานวิเคราะห์">
                                     <p class="font-bold text-green-800">โอกาสประหยัด 💡</p>
                                     <p class="text-gray-700">พบค่าใช้จ่ายด้าน Software ที่ซ้ำซ้อน อาจประหยัดได้ 5,000 บาท/เดือน</p>
                                 </div>
@@ -188,10 +188,21 @@
                         </div>
                     </div>
 
-                    <!-- New: Receivables, Payables & Financial Statement -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-6">
+                    <!-- CFO Key Metrics -->
+                    <div class="mt-8">
+                         <h2 class="text-xl font-bold text-gray-800 mb-4">ตัวชี้วัดเชิงกลยุทธ์และความเสี่ยง</h2>
+                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div class="bg-white p-6 rounded-xl border kpi-card"><p class="text-sm font-medium text-gray-500">ลูกหนี้เกินกำหนดชำระ</p><p class="text-3xl font-bold text-red-600 mt-1">฿120,000</p></div>
+                            <div class="bg-white p-6 rounded-xl border kpi-card"><p class="text-sm font-medium text-gray-500">อัตราส่วนหนี้สินต่อทุน</p><p class="text-3xl font-bold text-gray-800 mt-1">0.85</p></div>
+                            <div class="bg-white p-6 rounded-xl border kpi-card"><p class="text-sm font-medium text-gray-500">อัตราส่วนสภาพคล่อง</p><p class="text-3xl font-bold text-green-600 mt-1">2.1</p></div>
+                            <div class="bg-white p-6 rounded-xl border kpi-card"><p class="text-sm font-medium text-gray-500">รายได้ต่อพนักงาน</p><p class="text-3xl font-bold text-blue-600 mt-1">฿450,000</p></div>
+                        </div>
+                    </div>
+
+                    <!-- Financial Overview -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
                         <!-- Financial Statement Card -->
-                        <div class="bg-white p-6 rounded-xl border col-span-1 md:col-span-2">
+                        <div class="bg-white p-6 rounded-xl border">
                             <h2 class="text-lg font-bold text-gray-800 mb-2">สถานะการทำกำไร (ล่าสุด)</h2>
                             <div class="space-y-4">
                                 <div class="flex justify-between items-center pb-2 border-b border-dashed border-gray-300">
@@ -203,7 +214,7 @@
                                     <p class="font-bold text-red-600">฿2,400,000</p>
                                 </div>
                                 <div class="flex justify-between items-center pb-2 font-bold text-gray-800">
-                                    <p>กำไรขั้นต้น (41.4%)</p>
+                                    <p>กำไรขั้นต้น (58.6%)</p>
                                     <p>฿3,400,000</p>
                                 </div>
                                 <div class="flex justify-between items-center pb-2 border-b border-dashed border-gray-300">
@@ -211,36 +222,22 @@
                                     <p class="font-bold text-red-600">฿1,100,000</p>
                                 </div>
                                 <div class="flex justify-between items-center pb-2 text-2xl font-bold text-green-700">
-                                    <p>กำไรสุทธิ (20.7%)</p>
+                                    <p>กำไรสุทธิ (39.7%)</p>
                                     <p>฿2,300,000</p>
                                 </div>
                             </div>
                         </div>
-                        <!-- Receivables & Payables Card -->
-                         <div class="bg-white p-6 rounded-xl border">
-                             <h2 class="text-lg font-bold text-gray-800 mb-2">สถานะลูกหนี้และเจ้าหนี้</h2>
-                             <div class="space-y-4">
-                                 <div class="flex justify-between items-center">
-                                     <p class="text-gray-500">ลูกหนี้เกินกำหนดชำระ</p>
-                                     <p class="text-xl font-bold text-red-600">฿120,000</p>
-                                 </div>
-                                 <div class="flex justify-between items-center">
-                                     <p class="text-gray-500">ลูกหนี้ที่จะเก็บได้ใน 1 เดือน</p>
-                                     <p class="text-xl font-bold text-blue-600">฿350,000</p>
-                                 </div>
-                                 <div class="flex justify-between items-center">
-                                     <p class="text-gray-500">ลูกหนี้ที่จะเก็บได้ใน 2-3 เดือน</p>
-                                     <p class="text-xl font-bold text-cyan-600">฿720,000</p>
-                                 </div>
-                                 <div class="flex justify-between items-center">
-                                     <p class="text-gray-500">เจ้าหนี้ที่จะต้องจ่ายใน 2-3 เดือน</p>
-                                     <p class="text-xl font-bold text-red-600">฿580,000</p>
-                                 </div>
-                             </div>
-                         </div>
+                        <!-- Department Expenses Chart -->
+                        <div class="bg-white p-6 rounded-xl border">
+                            <h2 class="text-lg font-bold text-gray-800">ค่าใช้จ่ายตามแผนก (ล่าสุด)</h2>
+                            <div class="chart-container mt-4" style="height:350px">
+                                <canvas id="departmentExpenseChart"></canvas>
+                            </div>
+                        </div>
                     </div>
-                    <!-- New: Net Cash Flow Graph -->
-                    <div class="bg-white p-6 rounded-xl border mt-6">
+
+                    <!-- Net Cash Flow Graph -->
+                    <div class="bg-white p-6 rounded-xl border mt-8">
                         <h2 class="text-lg font-bold text-gray-800">กระแสเงินสดสุทธิ (Net Cash Flow)</h2>
                         <div class="chart-container mt-4 h-96">
                             <canvas id="netCashFlowChart"></canvas>
@@ -250,118 +247,109 @@
                 <!-- Sales View -->
                 <div id="sales-view" class="main-content">
                     <div class="flex justify-between items-center"><h1 class="text-2xl md:text-3xl font-bold text-gray-800">ขาย</h1><button class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">+ สร้างใบแจ้งหนี้</button></div>
-                    <div class="mt-6 bg-white rounded-xl border border-gray-200 overflow-x-auto"><table class="w-full text-left"><thead class="bg-gray-50"><tr><th class="p-4">วันที่</th><th class="p-4">เลขที่</th><th class="p-4">ลูกค้า</th><th class="p-4 text-right">ยอดเงิน</th><th class="p-4 text-center">สถานะ</th></tr></thead><tbody class="divide-y divide-gray-200"><tr class="hover:bg-gray-50"><td>05/09/2568</td><td>INV-0128</td><td>บริษัท JKL จำกัด</td><td class="text-right">฿75,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-yellow-800 bg-yellow-200 rounded-full">รอชำระ</span></td></tr><tr class="hover:bg-gray-50"><td>02/09/2568</td><td>INV-0127</td><td>บริษัท GHI จำกัด</td><td class="text-right">฿210,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-green-800 bg-green-200 rounded-full">จ่ายแล้ว</span></td></tr><tr class="hover:bg-gray-50"><td>28/08/2568</td><td>INV-0126</td><td>บริษัท DEF จำกัด</td><td class="text-right">฿35,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-green-800 bg-green-200 rounded-full">จ่ายแล้ว</span></td></tr><tr class="hover:bg-gray-50"><td>25/08/2568</td><td>INV-0125</td><td>บริษัท ABC จำกัด</td><td class="text-right">฿50,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-green-800 bg-green-200 rounded-full">จ่ายแล้ว</span></td></tr><tr class="hover:bg-gray-50"><td>15/08/2568</td><td>INV-0124</td><td>บริษัท XYZ จำกัด</td><td class="text-right">฿120,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-red-800 bg-red-200 rounded-full">เกินกำหนด</span></td></tr></tbody></table></div>
+                    <div class="mt-6 bg-white rounded-xl border border-gray-200 overflow-x-auto"><table class="w-full text-left"><thead class="bg-gray-50"><tr><th class="p-4">วันที่</th><th class="p-4">เลขที่</th><th class="p-4">ลูกค้า</th><th class="p-4 text-right">ยอดเงิน</th><th class="p-4 text-center">สถานะ</th></tr></thead><tbody class="divide-y divide-gray-200"><tr class="hover:bg-gray-50 cursor-pointer" data-id="INV-0128" data-date="05/09/2568" data-customer="บริษัท JKL จำกัด" data-amount="75,000.00" data-status="รอชำระ"><td>05/09/2568</td><td>INV-0128</td><td>บริษัท JKL จำกัด</td><td class="text-right">฿75,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-yellow-800 bg-yellow-200 rounded-full">รอชำระ</span></td></tr><tr class="hover:bg-gray-50 cursor-pointer" data-id="INV-0127" data-date="02/09/2568" data-customer="บริษัท GHI จำกัด" data-amount="210,000.00" data-status="จ่ายแล้ว"><td>02/09/2568</td><td>INV-0127</td><td>บริษัท GHI จำกัด</td><td class="text-right">฿210,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-green-800 bg-green-200 rounded-full">จ่ายแล้ว</span></td></tr><tr class="hover:bg-gray-50 cursor-pointer" data-id="INV-0126" data-date="28/08/2568" data-customer="บริษัท DEF จำกัด" data-amount="35,000.00" data-status="จ่ายแล้ว"><td>28/08/2568</td><td>INV-0126</td><td>บริษัท DEF จำกัด</td><td class="text-right">฿35,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-green-800 bg-green-200 rounded-full">จ่ายแล้ว</span></td></tr><tr class="hover:bg-gray-50 cursor-pointer" data-id="INV-0125" data-date="25/08/2568" data-customer="บริษัท ABC จำกัด" data-amount="50,000.00" data-status="จ่ายแล้ว"><td>25/08/2568</td><td>INV-0125</td><td>บริษัท ABC จำกัด</td><td class="text-right">฿50,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-green-800 bg-green-200 rounded-full">จ่ายแล้ว</span></td></tr><tr class="hover:bg-gray-50 cursor-pointer" data-id="INV-0124" data-date="15/08/2568" data-customer="บริษัท XYZ จำกัด" data-amount="120,000.00" data-status="เกินกำหนด"><td>15/08/2568</td><td>INV-0124</td><td>บริษัท XYZ จำกัด</td><td class="text-right">฿120,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-red-800 bg-red-200 rounded-full">เกินกำหนด</span></td></tr></tbody></table></div>
                 </div>
                 <!-- Purchases View -->
                 <div id="purchases-view" class="main-content">
                     <div class="flex justify-between items-center"><h1 class="text-2xl md:text-3xl font-bold text-gray-800">ซื้อ</h1><button class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">+ บันทึกค่าใช้จ่าย</button></div>
-                    <div class="mt-6 bg-white rounded-xl border border-gray-200 overflow-x-auto"><table class="w-full text-left"><thead class="bg-gray-50"><tr><th class="p-4">วันที่</th><th class="p-4">เลขที่บิล</th><th class="p-4">ผู้ขาย</th><th class="p-4 text-right">ยอดเงิน</th><th class="p-4 text-center">สถานะ</th></tr></thead><tbody class="divide-y divide-gray-200"><tr class="hover:bg-gray-50"><td>03/09/2568</td><td>EXP-09-001</td><td>Grab Transport</td><td class="text-right">฿850.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-green-800 bg-green-200 rounded-full">จ่ายแล้ว</span></td></tr><tr class="hover:bg-gray-50"><td>01/09/2568</td><td>B-5541</td><td>Hightech Solutions</td><td class="text-right">฿150,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-blue-800 bg-blue-200 rounded-full">จ่ายแล้ว</span></td></tr><tr class="hover:bg-gray-50"><td>29/08/2568</td><td>EXP-08-055</td><td>A Plus Supplies</td><td class="text-right">฿250,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-orange-800 bg-orange-200 rounded-full">รออนุมัติ</span></td></tr><tr class="hover:bg-gray-50"><td>25/08/2568</td><td>7781</td><td>OfficeMate</td><td class="text-right">฿12,500.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-green-800 bg-green-200 rounded-full">จ่ายแล้ว</span></td></tr><tr class="hover:bg-gray-50"><td>22/08/2568</td><td>AWS-082025</td><td>Amazon Web Services</td><td class="text-right">฿35,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-green-800 bg-green-200 rounded-full">จ่ายแล้ว</span></td></tr></tbody></table></div>
+                    <div class="mt-6 bg-white rounded-xl border border-gray-200 overflow-x-auto"><table class="w-full text-left"><thead class="bg-gray-50"><tr><th class="p-4">วันที่</th><th class="p-4">เลขที่บิล</th><th class="p-4">ผู้ขาย</th><th class="p-4 text-right">ยอดเงิน</th><th class="p-4 text-center">สถานะ</th></tr></thead><tbody class="divide-y divide-gray-200"><tr class="hover:bg-gray-50 cursor-pointer" data-id="EXP-09-001" data-date="03/09/2568" data-vendor="Grab Transport" data-amount="850.00" data-status="จ่ายแล้ว"><td>03/09/2568</td><td>EXP-09-001</td><td>Grab Transport</td><td class="text-right">฿850.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-green-800 bg-green-200 rounded-full">จ่ายแล้ว</span></td></tr><tr class="hover:bg-gray-50 cursor-pointer" data-id="B-5541" data-date="01/09/2568" data-vendor="Hightech Solutions" data-amount="150,000.00" data-status="จ่ายแล้ว"><td>01/09/2568</td><td>B-5541</td><td>Hightech Solutions</td><td class="text-right">฿150,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-blue-800 bg-blue-200 rounded-full">จ่ายแล้ว</span></td></tr><tr class="hover:bg-gray-50 cursor-pointer" data-id="EXP-08-055" data-date="29/08/2568" data-vendor="A Plus Supplies" data-amount="250,000.00" data-status="รออนุมัติ"><td>29/08/2568</td><td>EXP-08-055</td><td>A Plus Supplies</td><td class="text-right">฿250,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-orange-800 bg-orange-200 rounded-full">รออนุมัติ</span></td></tr><tr class="hover:bg-gray-50 cursor-pointer" data-id="7781" data-date="25/08/2568" data-vendor="OfficeMate" data-amount="12,500.00" data-status="จ่ายแล้ว"><td>25/08/2568</td><td>7781</td><td>OfficeMate</td><td class="text-right">฿12,500.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-green-800 bg-green-200 rounded-full">จ่ายแล้ว</span></td></tr><tr class="hover:bg-gray-50 cursor-pointer" data-id="AWS-082025" data-date="22/08/2568" data-vendor="Amazon Web Services" data-amount="35,000.00" data-status="จ่ายแล้ว"><td>22/08/2568</td><td>AWS-082025</td><td>Amazon Web Services</td><td class="text-right">฿35,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-green-800 bg-green-200 rounded-full">จ่ายแล้ว</span></td></tr></tbody></table></div>
                 </div>
                 <!-- Accounting View -->
                 <div id="accounting-view" class="main-content"><h1 class="text-2xl md:text-3xl font-bold text-gray-800">บัญชี</h1><p class="text-gray-500 mt-1">ผังบัญชีและสมุดรายวัน (เร็วๆ นี้)</p></div>
                 <!-- Trust Score View -->
                 <div id="trustscore-view" class="main-content">
-                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-                        <div>
-                            <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Prism Trust Score™</h1>
-                            <p class="text-gray-500 mt-1">คะแนนความน่าเชื่อถือทางธุรกิจ สำหรับ: บริษัท ABC จำกัด</p>
-                        </div>
-                        <button class="mt-3 sm:mt-0 bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">ดาวน์โหลด Trust Report (PDF)</button>
-                    </div>
-
-                    <!-- Overall Score -->
-                    <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                        <div class="bg-white p-8 rounded-xl border flex flex-col items-center justify-center text-center">
-                            <h2 class="text-lg font-bold text-gray-600">คะแนนรวม</h2>
-                            <div class="score-circle flex items-center justify-center mt-4">
-                                <div class="text-center z-10">
-                                    <p class="text-5xl font-extrabold text-[#087E8B]">785</p>
-                                    <p class="text-xs text-gray-500">จาก 1,000</p>
+                    <!-- Page Header -->
+                    <h1 class="text-3xl font-bold text-gray-800">Prism Trust Score™</h1>
+                    <p class="mt-1 text-gray-600">ภาพรวมสุขภาพทางการเงินและการบริหารความเสี่ยงของธุรกิจคุณ</p>
+                
+                    <!-- Top Section: Score & Trend -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-6">
+                        <!-- Score Card (Span 1) -->
+                        <div class="lg:col-span-1 bg-white p-6 rounded-xl border flex flex-col items-center justify-center text-center shadow-sm">
+                            <h2 class="text-xl font-bold text-gray-700">คะแนนรวม</h2>
+                            <div class="relative my-4">
+                                <div class="score-circle"></div>
+                                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                    <p class="text-7xl font-extrabold text-[#082032]">785</p>
+                                    <p class="text-gray-500 -mt-2">จาก 1,000</p>
                                 </div>
                             </div>
-                            <p class="mt-4 text-2xl font-bold text-[#087E8B]">สุขภาพทางการเงินดี</p>
-                            <p class="text-sm text-gray-600 mt-2">คะแนนของคุณอยู่ในกลุ่มธุรกิจที่มีประสิทธิภาพและมีการบริหารจัดการความเสี่ยงในระดับที่ดี</p>
+                            <p class="text-xl font-bold text-green-600">สุขภาพทางการเงินดี</p>
+                            <p class="text-sm text-gray-500 mt-2 max-w-xs mx-auto">คะแนนของคุณอยู่ในเกณฑ์ที่มีประสิทธิภาพและการบริหารจัดการความเสี่ยงในระดับที่ดี</p>
                         </div>
-                        <div class="bg-white p-6 rounded-xl border">
-                             <h2 class="text-lg font-bold text-gray-800">สรุปสุขภาพธุรกิจ (ย้อนหลัง 6 เดือน)</h2>
-                             <p class="text-gray-600 mt-2">สุขภาพทางการเงินโดยรวมแข็งแกร่งและมีแนวโน้มดีขึ้นอย่างต่อเนื่อง</p>
-                             <div class="chart-container mt-4 h-80">
+                        <!-- Trend Chart (Span 2) -->
+                        <div class="lg:col-span-2 bg-white p-6 rounded-xl border shadow-sm">
+                             <h2 class="text-lg font-bold text-gray-800">แนวโน้มคะแนน (ย้อนหลัง 6 เดือน)</h2>
+                             <p class="text-sm text-gray-500">สุขภาพทางการเงินโดยรวมแข็งแกร่งและมีแนวโน้มดีขึ้นอย่างต่อเนื่อง</p>
+                             <div class="chart-container mt-4" style="height: 320px;">
                                  <canvas id="trustScoreTrendChart"></canvas>
                              </div>
                         </div>
                     </div>
-                    
-                    <!-- Detailed Breakdown -->
-                    <div class="mt-8 space-y-8">
-                        <!-- Financial Health -->
-                        <div class="bg-white p-6 rounded-xl border">
-                            <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2"><svg class="h-6 w-6 text-green-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3C9.24 3 10.91 3.81 12 5.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5C22 12.28 18.6 15.36 13.45 20.03L12 21.35Z" fill="currentColor"/></svg>สุขภาพการเงิน (Financial Health)</h2>
-                            <p class="text-gray-600 mt-2">แสดงอัตราส่วนทางการเงินที่สำคัญที่ช่วยสะท้อนความมั่นคงของธุรกิจ</p>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                
+                    <!-- Middle Section: Financial Ratios -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+                        <!-- Financial Health Card -->
+                        <div class="bg-white p-6 rounded-xl border shadow-sm">
+                            <h2 class="text-lg font-bold text-gray-800">สุขภาพการเงิน (Financial Health)</h2>
+                            <p class="text-sm text-gray-500">อัตราส่วนทางการเงินที่สำคัญซึ่งสะท้อนความมั่นคงของธุรกิจ</p>
+                            <div class="mt-6 space-y-6">
                                 <div>
-                                    <div class="bg-gray-50 p-4 rounded-lg border">
-                                        <p class="text-sm font-medium text-gray-500">อัตราส่วนสภาพคล่องหมุนเวียน</p>
-                                        <p class="text-3xl font-bold text-blue-800 mt-1">2.1x</p>
-                                        <p class="text-xs text-gray-500">สินทรัพย์หมุนเวียน / หนี้สินหมุนเวียน</p>
+                                    <div class="flex justify-between items-baseline">
+                                        <p class="font-medium text-gray-600">อัตราส่วนสภาพคล่องหมุนเวียน</p>
+                                        <p class="text-2xl font-bold text-green-600">2.1x</p>
                                     </div>
-                                    <div class="bg-gray-50 p-4 rounded-lg border mt-4">
-                                        <p class="text-sm font-medium text-gray-500">อัตราส่วนหนี้สินต่อทุน</p>
-                                        <p class="text-3xl font-bold text-orange-600 mt-1">0.8x</p>
-                                        <p class="text-xs text-gray-500">หนี้สินรวม / ส่วนของผู้ถือหุ้น</p>
-                                    </div>
+                                    <p class="text-xs text-gray-500 mt-1">สินทรัพย์หมุนเวียน / หนี้สินหมุนเวียน</p>
                                 </div>
-                                <div class="chart-container h-80">
-                                    <canvas id="financialRatiosChart"></canvas>
+                                <hr>
+                                <div>
+                                    <div class="flex justify-between items-baseline">
+                                        <p class="font-medium text-gray-600">อัตราส่วนหนี้สินต่อทุน</p>
+                                        <p class="text-2xl font-bold text-orange-500">0.8x</p>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-1">หนี้สินรวม / ส่วนของผู้ถือหุ้น</p>
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- Document Transparency -->
-                        <div class="bg-white p-6 rounded-xl border">
-                            <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2"><svg class="h-6 w-6 text-blue-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.58 20 4 16.42 4 12C4 7.58 7.58 4 12 4C16.42 4 20 7.58 20 12C20 16.42 16.42 20 12 20ZM12 6C9.79 6 8 7.79 8 10V12H16V10C16 7.79 14.21 6 12 6ZM12 18C10.79 18 9.8 17.01 9.8 15.8V14C9.8 12.9 10.7 12 11.8 12H12.2C13.3 12 14.2 12.9 14.2 14V15.8C14.2 17.01 13.21 18 12 18Z" fill="currentColor"/></svg>ความโปร่งใสด้านเอกสาร (Document Transparency)</h2>
-                            <p class="text-gray-600 mt-2">สถิติการตรวจสอบเอกสารอัตโนมัติและความถูกต้อง</p>
-                            <ul class="list-disc list-inside mt-4 text-gray-700 space-y-2">
-                                <li>**เปอร์เซ็นต์เอกสารที่ Prism AI ตรวจสอบอัตโนมัติ:** 98.5%</li>
-                                <li>**เปอร์เซ็นต์เอกสารที่ผิดปกติ:** 1.5%</li>
-                                <li>**รายการธุรกรรมเสี่ยง:** พบการจ่ายเงินซ้ำซ้อน 2 รายการ และธุรกรรมนอกเวลาทำการ 1 รายการ</li>
+                        <!-- Financial Ratios Chart -->
+                        <div class="bg-white p-6 rounded-xl border shadow-sm">
+                            <h2 class="text-lg font-bold text-gray-800">แนวโน้มอัตราส่วนทางการเงิน</h2>
+                            <div class="chart-container mt-4" style="height: 250px;">
+                                <canvas id="financialRatiosChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- Bottom Section: Analysis & Recommendations -->
+                    <div class="mt-8 space-y-6">
+                        <div class="bg-white p-6 rounded-xl border shadow-sm">
+                            <h2 class="text-lg font-bold text-gray-800">ความโปร่งใสในด้านเอกสาร (Document Transparency)</h2>
+                            <p class="text-sm text-gray-500">สถิติการตรวจสอบเอกสารอัตโนมัติและความถูกต้อง</p>
+                            <ul class="mt-4 list-disc list-inside text-gray-700 space-y-2">
+                                <li>เปอร์เซ็นต์เอกสารที่ Prism AI ตรวจสอบอัตโนมัติ: <span class="font-bold">98.5%</span></li>
+                                <li>เปอร์เซ็นต์เอกสารที่ผิดปกติ: <span class="font-bold">1.5%</span></li>
+                                <li>รายการธุรกรรมเสี่ยงสูง: <span class="font-bold">พบการจ่ายซ้ำซ้อน 2 รายการ และธุรกรรมนอกเวลาทำการ 1 รายการ</span></li>
                             </ul>
                         </div>
-                        
-                        <!-- Risk Management -->
-                        <div class="bg-white p-6 rounded-xl border">
-                            <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2"><svg class="h-6 w-6 text-red-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 22H22L12 2ZM13 19H11V17H13V19ZM13 15H11V7H13V15Z" fill="currentColor"/></svg>การบริหารความเสี่ยง (Risk Management)</h2>
-                            <p class="text-gray-600 mt-2">ข้อมูลเชิงลึกด้านความเสี่ยงที่ Prism AI ตรวจจับได้</p>
-                            <ul class="list-disc list-inside mt-4 text-gray-700 space-y-2">
-                                <li>**ความเสี่ยงด้านกระแสเงินสด:** มีการคาดการณ์ว่ายอดเงินสดจะต่ำสุดในสัปดาห์หน้า</li>
-                                <li>**ประวัติการชำระหนี้:** มีการชำระหนี้ตรงเวลา 95% ของรายการทั้งหมดในช่วง 6 เดือนที่ผ่านมา</li>
-                                <li>**ความเสี่ยงด้านการเงิน:** ลูกหนี้การค้าที่เกินกำหนดชำระนานที่สุดคือ บริษัท XYZ จำกัด (เกิน 60 วัน)</li>
+                        <div class="bg-white p-6 rounded-xl border shadow-sm">
+                            <h2 class="text-lg font-bold text-gray-800">การบริหารความเสี่ยง (Risk Management)</h2>
+                            <p class="text-sm text-gray-500">ข้อมูลเชิงลึกด้านความเสี่ยงที่ Prism AI ตรวจจับได้</p>
+                            <ul class="mt-4 list-disc list-inside text-gray-700 space-y-2">
+                                <li><span class="font-bold text-orange-600">ความเสี่ยงด้านกระแสเงินสด:</span> มีการคาดการณ์ว่ายอดเงินสดจะลดต่ำสุดในสัปดาห์หน้า</li>
+                                <li><span class="font-bold">ประวัติการชำระหนี้:</span> มีการชำระตรงเวลา 95% ของรายการทั้งหมดในช่วง 6 เดือนที่ผ่านมา</li>
+                                <li><span class="font-bold text-red-600">ความเสี่ยงด้านลูกหนี้:</span> ลูกหนี้การค้าที่เกินกำหนดชำระนานที่สุดคือ บริษัท XYZ จำกัด (เกิน 60 วัน)</li>
+                            </ul>
+                        </div>
+                        <div class="bg-green-50 p-6 rounded-xl border border-green-200">
+                            <h2 class="text-lg font-bold text-green-800">คำแนะนำเพื่อการปรับปรุง</h2>
+                            <ul class="mt-4 list-disc list-inside text-green-900 space-y-2">
+                                 <li><span class="font-bold">ปรับปรุงสภาพคล่อง:</span> ควรลดระยะเวลาเก็บหนี้ลง 15-20% เพื่อให้มีสภาพคล่องสูงขึ้น และเตรียมพร้อมรับมือค่าใช้จ่ายที่ไม่คาดคิด</li>
+                                 <li><span class="font-bold">ตรวจสอบธุรกรรม:</span> ควรตรวจสอบธุรกรรมนอกเวลาทำการในเดือนที่ผ่านมา เพื่อลดความเสี่ยงด้านการทุจริต</li>
+                                 <li><span class="font-bold">คาดการณ์คะแนนในอนาคต:</span> หากทำตามคำแนะนำอย่างสม่ำเสมอ คะแนน Prism Trust Score™ ของคุณมีโอกาสเพิ่มขึ้นเป็น 820 ภายใน 3 เดือนข้างหน้า</li>
                             </ul>
                         </div>
                     </div>
-                    
-                    <!-- Actionable Recommendations -->
-                    <div class="mt-8 bg-white p-6 rounded-xl border">
-                        <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2"><svg class="h-6 w-6 text-purple-600" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22ZM12 20C7.58172 20 4 16.4183 4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12C20 16.4183 16.4183 20 12 20ZM12 18C14.2091 18 16 16.2091 16 14C16 11.7909 14.2091 10 12 10C9.79086 10 8 11.7909 8 14C8 16.2091 9.79086 18 12 18Z" fill="currentColor"/></svg>คำแนะนำเพื่อการปรับปรุง</h2>
-                        <ul class="list-disc list-inside mt-2 text-gray-700 space-y-2">
-                            <li>**ปรับปรุงสภาพคล่อง:** ควรลดหนี้ระยะสั้นลง 15-20% เพื่อให้อัตราส่วนสภาพคล่องสูงขึ้น และเตรียมพร้อมรับมือกับค่าใช้จ่ายที่ไม่คาดคิด</li>
-                            <li>**ตรวจสอบธุรกรรม:** กรุณาตรวจสอบธุรกรรมที่น่าสงสัยในเดือนที่ผ่านมา เพื่อลดความเสี่ยงด้านการทุจริต</li>
-                            <li>**คาดการณ์คะแนนในอนาคต:** หากทำตามคำแนะนำอย่างสม่ำเสมอ คะแนน Prism Trust Score™ ของคุณมีโอกาสเพิ่มขึ้นเป็น 820 ภายใน 3 เดือนข้างหน้า</li>
-                        </ul>
-                    </div>
-                    
                 </div>
-                <!-- Sales View -->
-                <div id="sales-view" class="main-content">
-                    <div class="flex justify-between items-center"><h1 class="text-2xl md:text-3xl font-bold text-gray-800">ขาย</h1><button class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">+ สร้างใบแจ้งหนี้</button></div>
-                    <div class="mt-6 bg-white rounded-xl border border-gray-200 overflow-x-auto"><table class="w-full text-left"><thead class="bg-gray-50"><tr><th class="p-4">วันที่</th><th class="p-4">เลขที่</th><th class="p-4">ลูกค้า</th><th class="p-4 text-right">ยอดเงิน</th><th class="p-4 text-center">สถานะ</th></tr></thead><tbody class="divide-y divide-gray-200"><tr class="hover:bg-gray-50"><td>05/09/2568</td><td>INV-0128</td><td>บริษัท JKL จำกัด</td><td class="text-right">฿75,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-yellow-800 bg-yellow-200 rounded-full">รอชำระ</span></td></tr><tr class="hover:bg-gray-50"><td>02/09/2568</td><td>INV-0127</td><td>บริษัท GHI จำกัด</td><td class="text-right">฿210,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-green-800 bg-green-200 rounded-full">จ่ายแล้ว</span></td></tr><tr class="hover:bg-gray-50"><td>28/08/2568</td><td>INV-0126</td><td>บริษัท DEF จำกัด</td><td class="text-right">฿35,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-green-800 bg-green-200 rounded-full">จ่ายแล้ว</span></td></tr><tr class="hover:bg-gray-50"><td>25/08/2568</td><td>INV-0125</td><td>บริษัท ABC จำกัด</td><td class="text-right">฿50,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-green-800 bg-green-200 rounded-full">จ่ายแล้ว</span></td></tr><tr class="hover:bg-gray-50"><td>15/08/2568</td><td>INV-0124</td><td>บริษัท XYZ จำกัด</td><td class="text-right">฿120,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-red-800 bg-red-200 rounded-full">เกินกำหนด</span></td></tr></tbody></table></div>
-                </div>
-                <!-- Purchases View -->
-                <div id="purchases-view" class="main-content">
-                    <div class="flex justify-between items-center"><h1 class="text-2xl md:text-3xl font-bold text-gray-800">ซื้อ</h1><button class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">+ บันทึกค่าใช้จ่าย</button></div>
-                    <div class="mt-6 bg-white rounded-xl border border-gray-200 overflow-x-auto"><table class="w-full text-left"><thead class="bg-gray-50"><tr><th class="p-4">วันที่</th><th class="p-4">เลขที่บิล</th><th class="p-4">ผู้ขาย</th><th class="p-4 text-right">ยอดเงิน</th><th class="p-4 text-center">สถานะ</th></tr></thead><tbody class="divide-y divide-gray-200"><tr class="hover:bg-gray-50"><td>03/09/2568</td><td>EXP-09-001</td><td>Grab Transport</td><td class="text-right">฿850.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-green-800 bg-green-200 rounded-full">จ่ายแล้ว</span></td></tr><tr class="hover:bg-gray-50"><td>01/09/2568</td><td>B-5541</td><td>Hightech Solutions</td><td class="text-right">฿150,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-blue-800 bg-blue-200 rounded-full">จ่ายแล้ว</span></td></tr><tr class="hover:bg-gray-50"><td>29/08/2568</td><td>EXP-08-055</td><td>A Plus Supplies</td><td class="text-right">฿250,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-orange-800 bg-orange-200 rounded-full">รออนุมัติ</span></td></tr><tr class="hover:bg-gray-50"><td>25/08/2568</td><td>7781</td><td>OfficeMate</td><td class="text-right">฿12,500.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-green-800 bg-green-200 rounded-full">จ่ายแล้ว</span></td></tr><tr class="hover:bg-gray-50"><td>22/08/2568</td><td>AWS-082025</td><td>Amazon Web Services</td><td class="text-right">฿35,000.00</td><td class="text-center"><span class="px-2 py-1 text-xs text-green-800 bg-green-200 rounded-full">จ่ายแล้ว</span></td></tr></tbody></table></div>
-                </div>
-                <!-- Accounting View -->
-                <div id="accounting-view" class="main-content"><h1 class="text-2xl md:text-3xl font-bold text-gray-800">บัญชี</h1><p class="text-gray-500 mt-1">ผังบัญชีและสมุดรายวัน (เร็วๆ นี้)</p></div>
                 <!-- Cases View -->
                 <div id="cases-view" class="main-content">
                     <h1 class="text-2xl md:text-3xl font-bold text-gray-800">เคสความเสี่ยง</h1>
@@ -429,7 +417,7 @@
                                 </div>
                             </div>
                             <div class="bg-white p-6 rounded-xl border mt-6">
-                                <h3 class="text-lg font-bold">เปรียบเทียบกับเป้าหมาย</h3>
+                                <h3 class="text-lg font-bold">เปรียบเทียบงบประมาณ (Budget vs Actual)</h3>
                                 <div class="chart-container mt-4 h-96"><canvas id="targetComparisonChart"></canvas></div>
                                 <div class="bg-gray-50 p-4 rounded-lg mt-4">
                                     <p class="font-bold text-gray-800">บทวิเคราะห์ Prism AI</p>
@@ -471,7 +459,7 @@
                         <div>
                             <h2 class="text-xl font-bold text-gray-800 mb-4">3. การวิเคราะห์การตลาด (Marketing Analysis)</h2>
                             <div class="bg-white p-6 rounded-xl border mt-6">
-                                <h3 class="text-lg font-bold">ประสิทธิภาพแคมเปญ</h3>
+                                <h3 class="text-lg font-bold">ประสิทธิภาพแคมเปญ (ROI)</h3>
                                 <div class="chart-container mt-4 h-96"><canvas id="campaignRoiChart"></canvas></div>
                                 <div class="bg-gray-50 p-4 rounded-lg mt-4">
                                      <p class="font-bold text-gray-800">บทวิเคราะห์ Prism AI</p>
@@ -503,24 +491,24 @@
                                  <h3 class="text-lg font-bold">ประสิทธิภาพการให้บริการ</h3>
                                  <div class="chart-container mt-4 h-96"><canvas id="serviceEfficiencyChart"></canvas></div>
                                  <div class="bg-gray-50 p-4 rounded-lg mt-4">
-                                     <p class="font-bold text-gray-800">บทวิเคราะห์ Prism AI</p>
-                                     <p class="text-gray-600 mt-1">เวลาเฉลี่ยในการให้บริการลูกค้าอยู่ในเกณฑ์ดี แต่มีอัตราข้อผิดพลาดที่ต้องปรับปรุง Prism AI แนะนำให้มีการฝึกอบรมพนักงานเพิ่มเติม</p>
+                                      <p class="font-bold text-gray-800">บทวิเคราะห์ Prism AI</p>
+                                      <p class="text-gray-600 mt-1">เวลาเฉลี่ยในการให้บริการลูกค้าอยู่ในเกณฑ์ดี แต่มีอัตราข้อผิดพลาดที่ต้องปรับปรุง Prism AI แนะนำให้มีการฝึกอบรมพนักงานเพิ่มเติม</p>
                                  </div>
                              </div>
                              <div class="bg-white p-6 rounded-xl border mt-6">
                                  <h3 class="text-lg font-bold">สถานะสินค้าคงคลัง (Inventory Status)</h3>
                                  <div class="chart-container mt-4 h-96"><canvas id="inventoryStatusChart"></canvas></div>
                                  <div class="bg-gray-50 p-4 rounded-lg mt-4">
-                                     <p class="font-bold text-gray-800">บทวิเคราะห์ Prism AI</p>
-                                     <p class="text-gray-600 mt-1">สินค้า A และ C มีสต็อกคงคลังอยู่ในระดับที่เหมาะสม แต่สินค้า B มีจำนวนน้อย อาจต้องพิจารณาสั่งซื้อเพิ่มเติมเพื่อป้องกันสินค้าขาด</p>
+                                      <p class="font-bold text-gray-800">บทวิเคราะห์ Prism AI</p>
+                                      <p class="text-gray-600 mt-1">สินค้า A และ C มีสต็อกคงคลังอยู่ในระดับที่เหมาะสม แต่สินค้า B มีจำนวนน้อย อาจต้องพิจารณาสั่งซื้อเพิ่มเติมเพื่อป้องกันสินค้าขาด</p>
                                  </div>
                              </div>
                              <div class="bg-white p-6 rounded-xl border mt-6">
                                  <h3 class="text-lg font-bold">ความพึงพอใจลูกค้า (Customer Satisfaction)</h3>
                                  <div class="chart-container mt-4 h-96"><canvas id="customerSatisfactionChart"></canvas></div>
                                  <div class="bg-gray-50 p-4 rounded-lg mt-4">
-                                     <p class="font-bold text-gray-800">บทวิเคราะห์ Prism AI</p>
-                                     <p class="text-gray-600 mt-1">คะแนนความพึงพอใจลูกค้ามีแนวโน้มดีขึ้นอย่างต่อเนื่อง แต่จำนวนข้อร้องเรียนที่เพิ่มขึ้นเล็กน้อยในเดือนเมษายนและมิถุนายนเป็นจุดที่ต้องให้ความสนใจ</p>
+                                      <p class="font-bold text-gray-800">บทวิเคราะห์ Prism AI</p>
+                                      <p class="text-gray-600 mt-1">คะแนนความพึงพอใจลูกค้ามีแนวโน้มดีขึ้นอย่างต่อเนื่อง แต่จำนวนข้อร้องเรียนที่เพิ่มขึ้นเล็กน้อยในเดือนเมษายนและมิถุนายนเป็นจุดที่ต้องให้ความสนใจ</p>
                                  </div>
                              </div>
                         </div>
@@ -532,24 +520,24 @@
                                  <h3 class="text-lg font-bold">ข้อมูลประชากรลูกค้า (Customer Demographics)</h3>
                                  <div class="chart-container mt-4 h-96"><canvas id="customerDemographicsChart"></canvas></div>
                                  <div class="bg-gray-50 p-4 rounded-lg mt-4">
-                                     <p class="font-bold text-gray-800">บทวิเคราะห์ Prism AI</p>
-                                     <p class="text-gray-600 mt-1">กลุ่มลูกค้าหลักคือช่วงอายุ 25-34 ปี ซึ่งเป็นกลุ่มเป้าหมายที่มีกำลังซื้อสูง Prism AI แนะนำให้สร้างแคมเปญการตลาดที่เข้าถึงกลุ่มเป้าหมายนี้โดยเฉพาะ</p>
+                                      <p class="font-bold text-gray-800">บทวิเคราะห์ Prism AI</p>
+                                      <p class="text-gray-600 mt-1">กลุ่มลูกค้าหลักคือช่วงอายุ 25-34 ปี ซึ่งเป็นกลุ่มเป้าหมายที่มีกำลังซื้อสูง Prism AI แนะนำให้สร้างแคมเปญการตลาดที่เข้าถึงกลุ่มเป้าหมายนี้โดยเฉพาะ</p>
                                  </div>
                              </div>
                              <div class="bg-white p-6 rounded-xl border mt-6">
                                  <h3 class="text-lg font-bold">พฤติกรรมการซื้อ (Purchasing Behavior)</h3>
                                  <div class="chart-container mt-4 h-96"><canvas id="purchasingBehaviorChart"></canvas></div>
                                  <div class="bg-gray-50 p-4 rounded-lg mt-4">
-                                     <p class="font-bold text-gray-800">บทวิเคราะห์ Prism AI</p>
-                                     <p class="text-gray-600 mt-1">ลูกค้ามีแนวโน้มที่จะซื้อบริการ A และสินค้า B บ่อยที่สุด Prism AI แนะนำให้จัดโปรโมชั่นแบบ Bundle สำหรับผลิตภัณฑ์เหล่านี้เพื่อเพิ่มยอดขาย</p>
+                                      <p class="font-bold text-gray-800">บทวิเคราะห์ Prism AI</p>
+                                      <p class="text-gray-600 mt-1">ลูกค้ามีแนวโน้มที่จะซื้อบริการ A และสินค้า B บ่อยที่สุด Prism AI แนะนำให้จัดโปรโมชั่นแบบ Bundle สำหรับผลิตภัณฑ์เหล่านี้เพื่อเพิ่มยอดขาย</p>
                                  </div>
                              </div>
                              <div class="bg-white p-6 rounded-xl border mt-6">
                                  <h3 class="text-lg font-bold">การรักษาลูกค้า (Customer Retention)</h3>
                                  <div class="chart-container mt-4 h-96"><canvas id="customerRetentionChart"></canvas></div>
                                  <div class="bg-gray-50 p-4 rounded-lg mt-4">
-                                     <p class="font-bold text-gray-800">บทวิเคราะห์ Prism AI</p>
-                                     <p class="text-gray-600 mt-1">อัตราการกลับมาซื้อซ้ำค่อนข้างสูง แสดงว่าลูกค้ามีความภักดีกับแบรนด์ Prism AI แนะนำให้สร้างโปรแกรมสมาชิกเพื่อรักษาฐานลูกค้าเก่า</p>
+                                      <p class="font-bold text-gray-800">บทวิเคราะห์ Prism AI</p>
+                                      <p class="text-gray-600 mt-1">อัตราการกลับมาซื้อซ้ำค่อนข้างสูง แสดงว่าลูกค้ามีความภักดีกับแบรนด์ Prism AI แนะนำให้สร้างโปรแกรมสมาชิกเพื่อรักษาฐานลูกค้าเก่า</p>
                                  </div>
                              </div>
                         </div>
@@ -557,12 +545,16 @@
                 </div>
                 <!-- Forecasts View -->
                 <div id="forecasts-view" class="main-content">
-                    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">พยากรณ์</h1>
-                    <p class="text-gray-500 mt-1">มองเห็นอนาคตทางการเงินและเตรียมพร้อมรับมือ</p>
+                    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">พยากรณ์กระแสเงินสด</h1>
+                    <p class="text-gray-500 mt-1">มองเห็นอนาคตทางการเงินและเตรียมพร้อมรับมือ (ล่วงหน้า 3-6 เดือน)</p>
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
                         <div class="lg:col-span-2 bg-white p-6 rounded-xl border">
                             <h2 class="text-lg font-bold">พยากรณ์กระแสเงินสด (90 วันข้างหน้า)</h2>
                             <div class="chart-container mt-4 h-96"><canvas id="cashflowForecastChart"></canvas></div>
+                             <div class="bg-gray-50 p-4 rounded-lg mt-4">
+                                <p class="font-bold text-gray-800">บทวิเคราะห์ Prism AI</p>
+                                <p class="text-gray-600 mt-1">จากแนวโน้มปัจจุบัน คาดว่ากระแสเงินสดจะยังคงเป็นบวกใน 3 เดือนข้างหน้า แต่จะมีการชะลอตัวในเดือนตุลาคมเนื่องจากมีค่าใช้จ่ายลงทุนตามแผน ขอแนะนำให้ติดตามการเก็บหนี้จากลูกค้ารายใหญ่เพื่อรักษาสภาพคล่อง</p>
+                            </div>
                         </div>
                         <div class="space-y-6">
                             <div class="kpi-card bg-white p-6 rounded-xl border">
@@ -720,12 +712,45 @@
     </div>
 
     <!-- Modal for Insight Details -->
-    <div id="insight-modal" class="modal fixed inset-0 bg-gray-900 bg-opacity-75 items-center justify-center z-50">
-        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg m-4 p-6 transform transition-all duration-300 scale-95 opacity-0" id="insight-modal-content">
-            <h2 id="insight-modal-title" class="text-2xl font-bold text-gray-800"></h2>
-            <p id="insight-modal-description" class="mt-4 text-gray-600"></p>
-            <div class="mt-6 flex justify-end">
-                <button class="bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-gray-300" id="close-insight-modal-btn">ปิด</button>
+    <div id="insight-action-modal" class="modal fixed inset-0 bg-gray-900 bg-opacity-75 items-center justify-center z-50">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg m-4 p-6 transform transition-all duration-300 scale-95 opacity-0" id="insight-action-modal-content">
+            <h2 id="insight-action-modal-title" class="text-2xl font-bold text-gray-800"></h2>
+            <p id="insight-action-modal-description" class="mt-4 text-gray-600"></p>
+            <div class="mt-6 flex justify-end gap-3">
+                <button class="bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-gray-300" id="close-insight-action-modal">ปิด</button>
+                <button class="bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700" id="insight-action-btn">ดำเนินการต่อ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Transaction Details -->
+    <div id="transaction-detail-modal" class="modal fixed inset-0 bg-gray-900 bg-opacity-75 items-center justify-center z-50">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg m-4 p-6 transform transition-all duration-300 scale-95 opacity-0" id="transaction-detail-modal-content">
+            <div class="flex justify-between items-center pb-4 border-b border-gray-200">
+                <h2 class="text-2xl font-bold text-gray-800" id="transaction-modal-title"></h2>
+                <button id="close-transaction-modal" class="text-gray-400 hover:text-gray-600"><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+            </div>
+            <div class="mt-4 space-y-4">
+                <div>
+                    <p class="text-sm text-gray-500">เลขที่</p>
+                    <p id="transaction-modal-id" class="text-lg font-bold text-gray-800"></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500">วันที่</p>
+                    <p id="transaction-modal-date" class="text-lg font-bold text-gray-800"></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500">คู่ค้า</p>
+                    <p id="transaction-modal-party" class="text-lg font-bold text-gray-800"></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500">ยอดเงิน</p>
+                    <p id="transaction-modal-amount" class="text-lg text-red-600 font-bold"></p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500">สถานะ</p>
+                    <p id="transaction-modal-status" class="text-lg text-gray-800"></p>
+                </div>
             </div>
         </div>
     </div>
@@ -777,10 +802,21 @@
         const toastContainer = document.getElementById('toast-container');
         const upgradeModal = document.getElementById('upgrade-modal');
         const upgradeModalContent = document.getElementById('upgrade-modal-content');
-        const insightModal = document.getElementById('insight-modal');
-        const insightModalContent = document.getElementById('insight-modal-content');
-        const insightModalTitle = document.getElementById('insight-modal-title');
-        const insightModalDescription = document.getElementById('insight-modal-description');
+        const insightActionModal = document.getElementById('insight-action-modal');
+        const insightActionModalContent = document.getElementById('insight-action-modal-content');
+        const insightActionModalTitle = document.getElementById('insight-action-modal-title');
+        const insightActionModalDescription = document.getElementById('insight-action-modal-description');
+        const insightActionButton = document.getElementById('insight-action-btn');
+        const salesTableRows = document.querySelectorAll('#sales-view tbody tr');
+        const purchasesTableRows = document.querySelectorAll('#purchases-view tbody tr');
+        const transactionDetailModal = document.getElementById('transaction-detail-modal');
+        const transactionDetailModalContent = document.getElementById('transaction-detail-modal-content');
+        const transactionModalTitle = document.getElementById('transaction-modal-title');
+        const transactionModalId = document.getElementById('transaction-modal-id');
+        const transactionModalDate = document.getElementById('transaction-modal-date');
+        const transactionModalParty = document.getElementById('transaction-modal-party');
+        const transactionModalAmount = document.getElementById('transaction-modal-amount');
+        const transactionModalStatus = document.getElementById('transaction-modal-status');
 
         const charts = {};
 
@@ -875,6 +911,27 @@
                         options: defaultChartOptions
                     });
                 }
+
+                const departmentExpenseCtx = document.getElementById('departmentExpenseChart');
+                if (departmentExpenseCtx) {
+                    if (charts.departmentExpenseChart) charts.departmentExpenseChart.destroy();
+                    charts.departmentExpenseChart = new Chart(departmentExpenseCtx.getContext('2d'), {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['ฝ่ายขาย', 'ฝ่ายการตลาด', 'IT', 'บริหาร', 'HR'],
+                            datasets: [{
+                                label: 'ค่าใช้จ่าย',
+                                data: [450000, 320000, 150000, 120000, 60000],
+                                backgroundColor: ['#0B3954', '#087E8B', '#FF5A5F', '#FCBF49', '#3B82F6'],
+                                borderWidth: 0
+                            }]
+                        },
+                        options: {
+                            ...defaultChartOptions,
+                            plugins: { ...defaultChartOptions.plugins, legend: { display: true, position: 'bottom' } }
+                        }
+                    });
+                }
             }, 100);
         }
 
@@ -916,11 +973,11 @@
                         data: {
                             labels: ['ยอดขาย', 'กำไรสุทธิ', 'ลูกค้าใหม่'],
                             datasets: [{
-                                label: 'ผลงานจริง',
+                                label: 'ใช้จ่ายจริง',
                                 data: [12.5, 2.8, 128],
                                 backgroundColor: '#087E8B',
                             }, {
-                                label: 'เป้าหมาย',
+                                label: 'งบประมาณ',
                                 data: [12.0, 2.5, 120],
                                 backgroundColor: '#FF5A5F',
                             }]
@@ -1213,31 +1270,31 @@
 
                 const financialRatiosCtx = document.getElementById('financialRatiosChart');
                 if (financialRatiosCtx) {
-                    if (charts.financialRatiosChart) charts.financialRatiosChart.destroy();
-                    charts.financialRatiosChart = new Chart(financialRatiosCtx.getContext('2d'), {
-                        type: 'line',
-                        data: {
-                            labels: ['ม.ค.', 'เม.ย.', 'ก.ค.', 'ต.ค.'],
-                            datasets: [{
-                                label: 'อัตราส่วนสภาพคล่องหมุนเวียน',
-                                data: [1.8, 2.0, 2.1, 2.3],
-                                borderColor: '#0B3954',
-                                tension: 0.2
-                            }, {
-                                label: 'อัตราส่วนหนี้สินต่อทุน',
-                                data: [0.9, 0.85, 0.8, 0.75],
-                                borderColor: '#FF5A5F',
-                                tension: 0.2
-                            }]
-                        },
-                        options: {
-                            ...defaultChartOptions,
-                            scales: {
-                                y: { beginAtZero: true }
+                         if (charts.financialRatiosChart) charts.financialRatiosChart.destroy();
+                         charts.financialRatiosChart = new Chart(financialRatiosCtx.getContext('2d'), {
+                            type: 'line',
+                            data: {
+                                labels: ['ม.ค.', 'เม.ย.', 'ก.ค.', 'ต.ค.'],
+                                datasets: [{
+                                    label: 'อัตราส่วนสภาพคล่องหมุนเวียน',
+                                    data: [1.8, 2.0, 2.1, 2.3],
+                                    borderColor: '#087E8B',
+                                    tension: 0.2
+                                }, {
+                                    label: 'อัตราส่วนหนี้สินต่อทุน',
+                                    data: [0.9, 0.85, 0.8, 0.75],
+                                    borderColor: '#FF5A5F',
+                                    tension: 0.2
+                                }]
                             },
-                            plugins: { ...defaultChartOptions.plugins, legend: { display: true, position: 'bottom' } }
-                        }
-                    });
+                            options: {
+                                ...defaultChartOptions,
+                                scales: {
+                                    y: { beginAtZero: true }
+                                },
+                                plugins: { ...defaultChartOptions.plugins, legend: { display: true, position: 'bottom' } }
+                            }
+                        });
                 }
             }, 100);
         }
@@ -1409,22 +1466,61 @@
             }, 3000);
         }
 
-        function showInsightModal(title, description) {
-            insightModalTitle.textContent = title;
-            insightModalDescription.textContent = description;
-            insightModal.classList.add('show');
+        function showInsightActionModal(title, description, targetView) {
+            insightActionModalTitle.textContent = title;
+            insightActionModalDescription.textContent = description;
+            insightActionButton.setAttribute('data-view', targetView);
+            insightActionModal.classList.add('show');
             setTimeout(() => {
-                insightModalContent.classList.remove('scale-95', 'opacity-0');
+                insightActionModalContent.classList.remove('scale-95', 'opacity-0');
             }, 10);
         }
-
-        function closeInsightModal() {
-            insightModalContent.classList.add('scale-95', 'opacity-0');
+        
+        function closeInsightActionModal() {
+            insightActionModalContent.classList.add('scale-95', 'opacity-0');
             setTimeout(() => {
-                insightModal.classList.remove('show');
+                insightActionModal.classList.remove('show');
             }, 300);
         }
         
+        function showTransactionDetailsModal(transactionType, data) {
+            transactionModalTitle.textContent = transactionType === 'sales' ? 'รายละเอียดใบแจ้งหนี้' : 'รายละเอียดใบเรียกเก็บ';
+            transactionModalId.textContent = data.id;
+            transactionModalDate.textContent = data.date;
+            transactionModalParty.textContent = data.customer || data.vendor;
+            transactionModalAmount.textContent = '฿' + data.amount;
+            transactionModalStatus.innerHTML = `<span class="px-2 py-1 text-xs font-medium rounded-full">${data.status}</span>`;
+            
+            // Set status color
+            let statusClass = '';
+            switch(data.status) {
+                case 'รอชำระ':
+                case 'เกินกำหนด':
+                case 'รออนุมัติ':
+                    statusClass = 'bg-yellow-200 text-yellow-800';
+                    break;
+                case 'จ่ายแล้ว':
+                    statusClass = 'bg-green-200 text-green-800';
+                    break;
+                default:
+                    statusClass = 'bg-gray-200 text-gray-800';
+                    break;
+            }
+            transactionModalStatus.querySelector('span').className += ' ' + statusClass;
+            
+            transactionDetailModal.classList.add('show');
+            setTimeout(() => {
+                transactionDetailModalContent.classList.remove('scale-95', 'opacity-0');
+            }, 10);
+        }
+
+        function closeTransactionDetailsModal() {
+            transactionDetailModalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                transactionDetailModal.classList.remove('show');
+            }, 300);
+        }
+
         function showUpgradeModal() {
             upgradeModal.classList.add('show');
             setTimeout(() => {
@@ -1552,22 +1648,33 @@
             });
         });
 
-        const dashboardInsightCards = document.querySelectorAll('#dashboard-view .bg-white.p-4');
+        const dashboardInsightCards = document.querySelectorAll('#dashboard-view .space-y-4 > div');
         dashboardInsightCards.forEach(card => {
             card.addEventListener('click', () => {
                 const title = card.getAttribute('data-title');
                 const description = card.getAttribute('data-description');
-                if (title && description) {
-                    showInsightModal(title, description);
+                const targetView = card.getAttribute('data-view');
+                if (title && description && targetView) {
+                    showInsightActionModal(title, description, targetView);
                 }
             });
         });
 
-        const closeInsightModalBtn = document.getElementById('close-insight-modal-btn');
-        if (closeInsightModalBtn) {
-            closeInsightModalBtn.addEventListener('click', closeInsightModal);
+        const closeInsightActionModalBtn = document.getElementById('close-insight-action-modal');
+        if (closeInsightActionModalBtn) {
+            closeInsightActionModalBtn.addEventListener('click', closeInsightActionModal);
         }
 
+        if (insightActionButton) {
+            insightActionButton.addEventListener('click', (e) => {
+                const targetView = e.currentTarget.getAttribute('data-view');
+                closeInsightActionModal();
+                if (targetView) {
+                    showAppView(targetView);
+                }
+            });
+        }
+        
         const closeAlertModalBtn = document.getElementById('close-alert-modal');
         if(closeAlertModalBtn) {
             closeAlertModalBtn.addEventListener('click', closeAlertDialog);
@@ -1619,66 +1726,82 @@
             });
         }
         
-        // Handle connect buttons in connections view
-        const connectButtons = document.querySelectorAll('.connect-btn');
-        connectButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                // If button is already connected, do nothing
-                if (button.classList.contains('bg-green-600')) {
-                    return;
-                }
-
-                const parentCard = button.closest('.bg-white');
-                const loader = parentCard.querySelector('.loader');
-                
-                // Show loader and hide button
-                button.classList.add('hidden');
-                loader.classList.remove('hidden');
-                
-                // Simulate a network request
-                setTimeout(() => {
-                    // Hide loader and show button
-                    loader.classList.add('hidden');
-                    button.classList.remove('hidden', 'bg-gray-200', 'text-gray-800', 'hover:bg-gray-300');
-                    button.classList.add('bg-green-600', 'text-white', 'hover:bg-green-700', 'cursor-not-allowed');
-                    button.textContent = '✓ เชื่อมต่อแล้ว';
-                    button.disabled = true; // Disable the button after connection
-                    showToastMessage(`เชื่อมต่อกับ ${parentCard.querySelector('h3').textContent} เรียบร้อยแล้ว`, 'success');
-                }, 2000);
+        // Handle sales & purchases transaction details
+        salesTableRows.forEach(row => {
+            row.addEventListener('click', () => {
+                const data = {
+                    id: row.getAttribute('data-id'),
+                    date: row.getAttribute('data-date'),
+                    customer: row.getAttribute('data-customer'),
+                    amount: row.getAttribute('data-amount'),
+                    status: row.querySelector('span').textContent
+                };
+                showTransactionDetailsModal('sales', data);
+            });
+        });
+        
+        purchasesTableRows.forEach(row => {
+            row.addEventListener('click', () => {
+                const data = {
+                    id: row.getAttribute('data-id'),
+                    date: row.getAttribute('data-date'),
+                    vendor: row.getAttribute('data-vendor'),
+                    amount: row.getAttribute('data-amount'),
+                    status: row.querySelector('span').textContent
+                };
+                showTransactionDetailsModal('purchases', data);
             });
         });
 
-        // Handle file upload card
-        const uploadCard = document.querySelector('.upload-card');
-        const uploadInput = document.getElementById('file-upload-input');
-        if (uploadCard && uploadInput) {
-            uploadCard.addEventListener('click', (e) => {
-                if (e.target.tagName !== 'INPUT') { // Avoid double-clicking
-                    uploadInput.click();
+        const closeTransactionModalBtn = document.getElementById('close-transaction-modal');
+        if (closeTransactionModalBtn) {
+            closeTransactionModalBtn.addEventListener('click', closeTransactionDetailsModal);
+        }
+
+        // Connect buttons in Connections view
+        const connectBtns = document.querySelectorAll('.connect-btn');
+        connectBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const card = e.currentTarget.closest('.bg-white');
+                const loader = card.querySelector('.loader');
+                const originalText = e.currentTarget.textContent;
+
+                if(e.currentTarget.classList.contains('connected')) {
+                    e.currentTarget.textContent = 'เชื่อมต่อ';
+                    e.currentTarget.classList.remove('connected', 'bg-green-600', 'text-white');
+                    e.currentTarget.classList.add('bg-gray-200', 'text-gray-800');
+                    showToastMessage(`ยกเลิกการเชื่อมต่อ ${e.currentTarget.dataset.id.toUpperCase()} แล้ว`, 'error');
+                } else {
+                    loader.classList.remove('hidden');
+                    setTimeout(() => {
+                        loader.classList.add('hidden');
+                        e.currentTarget.textContent = 'เชื่อมต่อแล้ว';
+                        e.currentTarget.classList.add('connected', 'bg-green-600', 'text-white');
+                        e.currentTarget.classList.remove('bg-gray-200', 'text-gray-800');
+                        showToastMessage(`เชื่อมต่อกับ ${e.currentTarget.dataset.id.toUpperCase()} สำเร็จ!`, 'success');
+                    }, 2000);
                 }
             });
-            uploadInput.addEventListener('change', () => {
-                const loader = uploadCard.querySelector('.loader');
-                const content = uploadCard.querySelectorAll('h3, p, svg');
-                
-                content.forEach(el => el.classList.add('hidden'));
-                loader.classList.remove('hidden');
+        });
 
+        const uploadCard = document.querySelector('.upload-card');
+        const fileUploadInputConnection = document.querySelector('.upload-card input[type="file"]');
+        if(uploadCard) {
+            uploadCard.addEventListener('click', () => fileUploadInputConnection.click());
+            fileUploadInputConnection.addEventListener('change', (e) => {
+                const loader = uploadCard.querySelector('.loader');
+                loader.classList.remove('hidden');
                 setTimeout(() => {
                     loader.classList.add('hidden');
-                    content.forEach(el => el.classList.remove('hidden'));
-                    showToastMessage('อัปโหลดไฟล์เรียบร้อยแล้ว', 'success');
-                }, 3000);
+                    showToastMessage(`อัปโหลดไฟล์ ${e.target.files[0].name} สำเร็จ!`, 'success');
+                }, 2000);
             });
         }
-
-
+        
+        // Initial view
         showFullPageView('landing-view');
-        // Initial chart rendering
-        const initialView = document.querySelector('.main-content.active');
-        if (initialView) {
-            switchView(initialView.id.replace('-view', ''));
-        }
+        // Or uncomment to start in the app directly for testing
+        // showAppView('dashboard');
     });
     </script>
 </body>
